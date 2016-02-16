@@ -8,7 +8,7 @@
         android:top="2dp">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
-            <solid android:color="#FFF07B06" />
+            <solid android:color="@color/orangeIsTheNewBlack" />
             <corners android:radius="20dp" />
         </shape>
     </item>

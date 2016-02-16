@@ -47,54 +47,48 @@
 
     </RelativeLayout>
 
-    <TableRow
+    <LinearLayout
         android:id="@+id/addProductToListLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".6"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:visibility="gone">
 
         <Spinner
             android:id="@+id/product_input"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="45dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="2dp"
             android:layout_marginRight="4dp"
             android:layout_weight=".1"
-            android:background="#FFF07B06"
+            android:background="@color/orangeIsTheNewBlack"
             android:gravity="center_vertical"
             android:paddingLeft="4dp"
             android:singleLine="true"
-            android:textColor="#ffffff" />
+            android:spinnerMode="dialog" />
 
         <EditText
             android:id="@+id/quantity_input"
             android:layout_width="40dp"
             android:layout_height="45dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/product_input"
-            android:layout_toRightOf="@+id/product_input"
-            android:background="#FFF07B06"
+            android:background="@color/orangeIsTheNewBlack"
             android:gravity="center_vertical"
             android:inputType="number"
             android:paddingLeft="4dp"
             android:singleLine="true"
-            android:textColor="#ffffff" />
+            android:text="0" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/ok_button"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="2dp"
             android:layout_marginRight="60dp"
             android:background="@drawable/rounded_button"
             android:singleLine="true"
             android:text="OK" />
 
-    </TableRow>
+    </LinearLayout>
 
 </LinearLayout>

@@ -33,16 +33,6 @@
         android:textSize="16dp" />
 
     <Button
-        android:id="@+id/incrQButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/rounded_button"
-        android:text="+"
-        android:textColor="#FFF" />
-
-    <Button
         android:id="@+id/decrQButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="40dp"
@@ -50,6 +40,16 @@
         android:layout_gravity="center_vertical"
         android:background="@drawable/rounded_button"
         android:text="-"
+        android:textColor="#FFF" />
+
+    <Button
+        android:id="@+id/incrQButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/rounded_button"
+        android:text="+"
         android:textColor="#FFF" />
 
 </LinearLayout>

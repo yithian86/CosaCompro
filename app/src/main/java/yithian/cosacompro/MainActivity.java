@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -120,15 +122,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addProductToList() {
-        View v = findViewById(R.id.addProductToListLayout);
+        final int[] productIdSelected = new int[1];
+        final View v = findViewById(R.id.addProductToListLayout);
         if (v.getVisibility() == View.GONE) {
-            v.setVisibility(View.VISIBLE);
+            /*
+            Generate the Spinner with all the product names.
+            TODO: Exclude from the spinner all products that are already in the list. In order to do that
+            TODO: you should create a specific method in the GroceriesListHandler which takes in input
+            TODO: an ArrayList<String> containing all products from the default_list and the default_list name.
+            */
             ArrayList<String> arrayProducts = dbPopulator.getProductHandler().getProductNames();
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, arrayProducts);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             Spinner sItems = (Spinner) findViewById(R.id.product_input);
             sItems.setAdapter(adapter);
+            sItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String productSelected = parent.getItemAtPosition(position).toString();
+                    productIdSelected[0] = dbPopulator.getProductHandler().getProductID(productSelected);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            // Configure the button thingy
+            Button ok_button = (Button) findViewById(R.id.ok_button);
+            ok_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText quantity_input = (EditText) findViewById(R.id.quantity_input);
+                    String quantityText = quantity_input.getText().toString();
+                    groceriesListHandler.addGroceriesList(new GroceriesList(Integer.parseInt(quantityText), defaultList, productIdSelected[0]));
+                    // TODO: Clear the input text fields. You may wanna create a function to do that
+                    // TODO: and maybe incapsulate this horrorific mess inside a unique class (maybe a MainActivityUI class?).
+                    v.setVisibility(View.GONE);
+                    refreshDefaultList();
+                }
+            });
+
+            // Make the layout visibile
+            v.setVisibility(View.VISIBLE);
         } else {
             v.setVisibility(View.GONE);
             Spinner sItems = (Spinner) findViewById(R.id.product_input);

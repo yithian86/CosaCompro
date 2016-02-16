@@ -109,6 +109,27 @@ public class ProductHandler extends SQLiteOpenHelper {
         return productName;
     }
 
+    //GET a product ID by providing its name
+    public int getProductID(String productName) {
+        int productID = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_PRODUCT_NAME + "=\"" + productName + "\";", null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        // TODO: Check whether the while loop is necessary or troublesome.
+        while (!c.isAfterLast()) {
+            if (c.getCount() != 0) {
+                productID = c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID));
+            }
+            c.moveToNext();
+        }
+        db.close();
+        return productID;
+    }
+
     //GET all products and store each product_name in an ArrayList
     public ArrayList<String> getProductNames() {
         ArrayList<String> allProducts = new ArrayList<String>();
