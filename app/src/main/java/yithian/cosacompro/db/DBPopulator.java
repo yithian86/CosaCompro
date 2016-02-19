@@ -100,10 +100,10 @@ public class DBPopulator extends SQLiteOpenHelper {
         // Wipe out table content
         productHandler.deleteAllProducts();
 
-        String[] product_name = {"Certosa", "Latte parzialmente scremato", "Passata di pomodoro"};
-        String[] brand = {"Galbani", "Parmalat", "Cirio"};
-        String[] description = {"165gr", "1 litro", "700gr"};
-        String[] category = {"Latte e derivati", "Latte e derivati", "Salse e Sughi"};
+        String[] product_name = {"Certosa", "Latte parzialmente scremato", "Passata di pomodoro", "Mozzarella Santa Lucia"};
+        String[] brand = {"Galbani", "Parmalat", "Cirio", "Galbani"};
+        String[] description = {"165gr", "1 litro", "700gr", "125gr x 3"};
+        String[] category = {"Latte e derivati", "Latte e derivati", "Salse e Sughi", "Latte e derivati"};
         for (int i = 0; i < brand.length; i++) {
             product = new Product("-", product_name[i], brand[i], description[i], category[i]);
             productHandler.addProduct(product);

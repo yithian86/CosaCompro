@@ -78,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openSettings() {
-        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     protected void onPostResume() {
         super.onPostResume();
         mainActivityUI.generateDefaultList();
+    }
+
+    public void openSettings() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

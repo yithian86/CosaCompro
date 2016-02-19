@@ -54,7 +54,7 @@
         android:layout_height="match_parent"
         android:layout_weight=".6"
         android:gravity="bottom"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <Spinner
             android:id="@+id/product_input"

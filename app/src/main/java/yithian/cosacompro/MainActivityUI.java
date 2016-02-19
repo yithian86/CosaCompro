@@ -37,9 +37,11 @@ public class MainActivityUI {
     private Button ok_button;
     private ArrayList<String> arrayProducts;
     private ArrayAdapter<String> product_inputAdapter;
+    private InputMethodManager inputMethodManager;
 
     public MainActivityUI(Activity main_activity, SettingsManager settingsManager, DBPopulator dbPopulator) {
         this.main_activity = main_activity;
+        inputMethodManager = (InputMethodManager) main_activity.getSystemService(main_activity.INPUT_METHOD_SERVICE);
 
         // Settings and Preferences
         this.settingsManager = settingsManager;
@@ -83,14 +85,9 @@ public class MainActivityUI {
     public void generateAddProductToList() {
         final int[] productIdSelected = new int[1];
 
-        if (addProductToListLayout.getVisibility() == View.GONE) {
+        if (addProductToListLayout.getVisibility() == View.INVISIBLE) {
             // Generate the Spinner with all the product names.
-            /*
-            TODO: Exclude from the spinner all products that are already in the list. In order to do that
-            TODO: you should create a specific method in the GroceriesListHandler which takes in input
-            TODO: an ArrayList<String> containing all products from the default_list and the default_list name.
-            */
-            arrayProducts = dbPopulator.getProductHandler().getProductNames();
+            arrayProducts = differenceList(dbPopulator.getProductHandler().getProductNames(), groceriesNameList);
             product_inputAdapter = new ArrayAdapter<String>(main_activity, android.R.layout.simple_spinner_item, arrayProducts);
             product_inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             product_input.setAdapter(product_inputAdapter);
@@ -102,33 +99,57 @@ public class MainActivityUI {
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
             });
 
-            // Configure the button thingy
+            // Configure the Ok_button thingy
             ok_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String quantityText = quantity_input.getText().toString();
                     dbPopulator.getGroceriesListHandler().addGroceriesList(new GroceriesList(Integer.parseInt(quantityText), defaultList, productIdSelected[0]));
                     clearAddProductToListFields();
-                    addProductToListLayout.setVisibility(View.GONE);
+                    inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
+                    addProductToListLayout.setVisibility(View.INVISIBLE);
                     generateDefaultList();
                 }
             });
             // Make the layout visibile
             addProductToListLayout.setVisibility(View.VISIBLE);
         } else {
-            addProductToListLayout.setVisibility(View.GONE);
             clearAddProductToListFields();
-            InputMethodManager i = (InputMethodManager) main_activity.getSystemService(main_activity.INPUT_METHOD_SERVICE);
-            i.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
+            addProductToListLayout.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void clearAddProductToListFields () {
+    private void clearAddProductToListFields() {
         product_input.setSelection(-1);
         quantity_input.setText("0");
     }
 
+    // minuend - subtraend = difference
+    private ArrayList<String> differenceList(ArrayList<String> minuend, ArrayList<String> subtraend) {
+        ArrayList<String> differenceList = new ArrayList<>();
+        if (minuend.size() <= subtraend.size()) {
+            differenceList.add("Nessun prodotto disponibile!");
+            disableOk_button();
+        } else {
+            for (int i = 0; i < minuend.size(); i++) {
+                if (!subtraend.contains(minuend.get(i)))
+                    differenceList.add(minuend.get(i));
+            }
+            enableOk_button();
+        }
+        return differenceList;
+    }
+
+    private void disableOk_button() {
+        ok_button.setEnabled(false);
+    }
+
+    private void enableOk_button() {
+        ok_button.setEnabled(true);
+    }
 }
