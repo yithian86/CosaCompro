@@ -1,29 +1,30 @@
 package yithian.cosacompro;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
 
 public class GroceriesAdapter extends BaseAdapter {
-    private DBPopulator dbPopulator;
-    private ArrayList<GroceriesList> groceriesLists;
-    private Context context;
+    private Context main_context;
+    private Activity main_activity;
     private String defaultList;
+    private DBPopulator dbPopulator;
+    private RowUI rowUI;
+    private ArrayList<GroceriesList> groceriesLists;
 
-    public GroceriesAdapter(Context context, ArrayList<GroceriesList> groceriesLists, String defaultList) {
-        this.dbPopulator = new DBPopulator(context, null, null, 1);
-        this.groceriesLists = groceriesLists;
-        this.context = context;
+    public GroceriesAdapter(Context main_context, Activity main_activity, ArrayList<GroceriesList> groceriesLists, String defaultList, DBPopulator dbPopulator) {
+        this.main_context = main_context;
+        this.main_activity = main_activity;
         this.defaultList = defaultList;
+        this.groceriesLists = groceriesLists;
+        this.dbPopulator = dbPopulator;
     }
 
     @Override
@@ -42,39 +43,35 @@ public class GroceriesAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View v, ViewGroup parent) {
-        if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.row, null);
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+        if (view == null) {
+            view = LayoutInflater.from(main_context).inflate(R.layout.row, null);
         }
-        final GroceriesList gl = (GroceriesList) getItem(position);
-        TextView txt = (TextView) v.findViewById(R.id.prodNameTextView);
-        txt.setText(gl.getProduct_name());
-        txt = (TextView) v.findViewById(R.id.quantityTextView);
-        txt.setText(Integer.toString(gl.getQuantity()));
+        // Retrieve the current element (a GroceriesList object)
+        GroceriesList curGrocerie = (GroceriesList) getItem(position);
 
-        // Initialize Buttons
-        Button button = (Button) v.findViewById(R.id.incrQButton);
-        final TextView finalTxt = txt;
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int temp = Integer.parseInt(finalTxt.getText().toString());
-                temp++;
-                finalTxt.setText(Integer.toString(temp));
-                dbPopulator.getGroceriesListHandler().updateQuantity(defaultList, Integer.toString(gl.getProduct_id()), temp);
-            }
-        });
+        // Generate the row UI
+        rowUI = new RowUI(this, main_activity, view, curGrocerie);
+        rowUI.generateRowUI();
+        return view;
+    }
 
-        button = (Button) v.findViewById(R.id.decrQButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int temp = Integer.parseInt(finalTxt.getText().toString());
-                if (temp > 0) {
-                    temp--;
-                    finalTxt.setText(Integer.toString(temp));
-                    dbPopulator.getGroceriesListHandler().updateQuantity(defaultList, Integer.toString(gl.getProduct_id()), temp);
-                }
-            }
-        });
-        return v;
+    public void removeFromList(GroceriesList grocerie) {
+        int index = groceriesLists.indexOf(grocerie);
+        groceriesLists.remove(index);
+    }
+
+    // GETTERS
+    public DBPopulator getDbPopulator() {
+        return dbPopulator;
+    }
+
+    public String getDefaultList() {
+        return defaultList;
     }
 }

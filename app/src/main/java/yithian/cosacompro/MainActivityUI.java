@@ -35,9 +35,13 @@ public class MainActivityUI {
     private Spinner product_input;
     private EditText quantity_input;
     private Button ok_button;
+    private InputMethodManager inputMethodManager;
     private ArrayList<String> arrayProducts;
     private ArrayAdapter<String> product_inputAdapter;
-    private InputMethodManager inputMethodManager;
+    private int productIdSelected;
+
+    public MainActivityUI() {
+    }
 
     public MainActivityUI(Activity main_activity, SettingsManager settingsManager, DBPopulator dbPopulator) {
         this.main_activity = main_activity;
@@ -75,18 +79,19 @@ public class MainActivityUI {
             arrGrList.add(gl);
         }
         // 3. Create the ArrayAdapter (layout and content)
-        groceriesAdapter = new GroceriesAdapter(main_activity, arrGrList, defaultList);
+        groceriesAdapter = new GroceriesAdapter(main_activity, main_activity, arrGrList, defaultList, dbPopulator);
         // 4. Update the list name and apply the ArrayAdapter to the ListView
         listNameView.setText(defaultList);
         groceriesListView.setAdapter(groceriesAdapter);
     }
 
+
+    // ======================== addProductToList ======================== //
     // Generates the layout 'addProductToList', which allows the user to add groceries to the current default list.
     public void generateAddProductToList() {
-        final int[] productIdSelected = new int[1];
-
         if (addProductToListLayout.getVisibility() == View.INVISIBLE) {
             // Generate the Spinner with all the product names.
+            groceriesNameList = dbPopulator.getGroceriesListHandler().getGroceriesNameByListName(defaultList);
             arrayProducts = differenceList(dbPopulator.getProductHandler().getProductNames(), groceriesNameList);
             product_inputAdapter = new ArrayAdapter<String>(main_activity, android.R.layout.simple_spinner_item, arrayProducts);
             product_inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,7 +100,7 @@ public class MainActivityUI {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     String productSelected = parent.getItemAtPosition(position).toString();
-                    productIdSelected[0] = dbPopulator.getProductHandler().getProductID(productSelected);
+                    productIdSelected = dbPopulator.getProductHandler().getProductID(productSelected);
                 }
 
                 @Override
@@ -108,7 +113,8 @@ public class MainActivityUI {
                 @Override
                 public void onClick(View view) {
                     String quantityText = quantity_input.getText().toString();
-                    dbPopulator.getGroceriesListHandler().addGroceriesList(new GroceriesList(Integer.parseInt(quantityText), defaultList, productIdSelected[0]));
+                    dbPopulator.getGroceriesListHandler().addGroceriesList(new GroceriesList(Integer.parseInt(quantityText), defaultList, productIdSelected));
+
                     clearAddProductToListFields();
                     inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
                     addProductToListLayout.setVisibility(View.INVISIBLE);
@@ -132,7 +138,9 @@ public class MainActivityUI {
     // minuend - subtraend = difference
     private ArrayList<String> differenceList(ArrayList<String> minuend, ArrayList<String> subtraend) {
         ArrayList<String> differenceList = new ArrayList<>();
-        if (minuend.size() <= subtraend.size()) {
+        if (subtraend.size() == 0)
+            return minuend;
+        else if (minuend.size() <= subtraend.size()) {
             differenceList.add("Nessun prodotto disponibile!");
             disableOk_button();
         } else {

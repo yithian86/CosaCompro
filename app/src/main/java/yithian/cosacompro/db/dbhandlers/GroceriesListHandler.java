@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -56,23 +57,25 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
     }
 
     //ADD a new row to the database
-    public void addGroceriesList(GroceriesList groceriesList) {
+    public void addGroceriesList(GroceriesList grocery) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_QUANTITY, groceriesList.getQuantity());
-        values.put(COLUMN_PRODUCT_ID_FK, groceriesList.getProduct_id());
-        values.put(COLUMN_LIST_NAME_FK, groceriesList.getList_name());
+        values.put(COLUMN_QUANTITY, grocery.getQuantity());
+        values.put(COLUMN_PRODUCT_ID_FK, grocery.getProduct_id());
+        values.put(COLUMN_LIST_NAME_FK, grocery.getList_name());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_NAME, null, values);
         db.close();
+
+        logGroceriesList("addGroceriesList", grocery.getList_name());
     }
 
     //UPDATE quantity
-    public void updateQuantity(String listName, String id, int quantity) {
+    public void updateQuantity(GroceriesList grocery) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_QUANTITY, quantity);
+        values.put(COLUMN_QUANTITY, grocery.getQuantity());
         SQLiteDatabase db = getWritableDatabase();
-        db.update(TABLE_NAME, values, COLUMN_LIST_NAME_FK + "= \"" + listName + "\" AND "
-                + COLUMN_PRODUCT_ID_FK + "=" + id, null);
+        db.update(TABLE_NAME, values, COLUMN_LIST_NAME_FK + "= \"" + grocery.getList_name() + "\" AND "
+                + COLUMN_PRODUCT_ID_FK + "=" + grocery.getProduct_id(), null);
     }
 
     //DELETE all groceries from the DB
@@ -83,14 +86,17 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
     }
 
     //DELETE a grocery from the list
-    public void deleteGroceryByID(int id) {
+    public void deleteGrocery(GroceriesList grocery) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_GLIST_ID + "=" + id + ";");
+        db.delete(TABLE_NAME, COLUMN_LIST_NAME_FK + "=\"" + grocery.getList_name() + "\" AND "
+                + COLUMN_PRODUCT_ID_FK + "=\"" + grocery.getProduct_id() + "\"", null);
         db.close();
+
+        logGroceriesList("deleteGrocery", grocery.getList_name());
     }
 
     //DELETE all groceries from a list
-    public void deleteGroceriesFromList(String listName) {
+    public void deleteAllGroceriesFromList(String listName) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_LIST_NAME_FK + "=\"" + listName + "\";");
         db.close();
@@ -157,5 +163,13 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
         }
         db.close();
         return resList;
+    }
+
+    public void logGroceriesList(String function, String listName) {
+        ArrayList<String> a = getGroceriesNameByListName(listName);
+        for (String s : a) {
+            Log.d(function, s);
+        }
+        Log.d(function, "-----------------------------");
     }
 }

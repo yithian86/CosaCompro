@@ -4,12 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <Button
+        android:id="@+id/deleteButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/rounded_red_button"
+        android:enabled="false"
+        android:text="X"
+        android:textColor="#FFF"
+        android:visibility="gone"
+        android:backgroundTint="#F00" />
+
     <TextView
         android:id="@+id/prodNameTextView"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
-        android:layout_weight=".80"
+        android:layout_marginLeft="2dp"
+        android:layout_weight=".70"
         android:clickable="false"
         android:focusableInTouchMode="false"
         android:gravity="center_vertical"
@@ -20,10 +34,9 @@
 
     <TextView
         android:id="@+id/quantityTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
-        android:layout_weight=".10"
         android:clickable="false"
         android:focusableInTouchMode="false"
         android:gravity="center_vertical|center_horizontal"
