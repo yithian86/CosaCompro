@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.managesellers.SellerListActivity;
+import yithian.cosacompro.settings.SettingsActivity;
+import yithian.cosacompro.settings.SettingsManager;
 
 public class MainActivity extends AppCompatActivity {
-    private String defaultList;
     private SettingsManager settingsManager;
     private DBPopulator dbPopulator;
     private MainActivityUI mainActivityUI;
@@ -60,11 +62,19 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Intent intent;
 
         // noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            openSettings();
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.action_manageSellers:
+                intent = new Intent(MainActivity.this, SellerListActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -73,10 +83,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         mainActivityUI.generateDefaultList();
-    }
-
-    public void openSettings() {
-        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(intent);
     }
 }

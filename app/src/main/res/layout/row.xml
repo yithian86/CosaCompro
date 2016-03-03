@@ -2,6 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="false"
+    android:contextClickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     android:orientation="horizontal">
 
     <Button
@@ -11,11 +15,11 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/rounded_red_button"
+        android:backgroundTint="#F00"
         android:enabled="false"
         android:text="X"
         android:textColor="#FFF"
-        android:visibility="gone"
-        android:backgroundTint="#F00" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/prodNameTextView"

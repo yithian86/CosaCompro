@@ -65,8 +65,6 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_NAME, null, values);
         db.close();
-
-        logGroceriesList("addGroceriesList", grocery.getList_name());
     }
 
     //UPDATE quantity
@@ -91,8 +89,6 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, COLUMN_LIST_NAME_FK + "=\"" + grocery.getList_name() + "\" AND "
                 + COLUMN_PRODUCT_ID_FK + "=\"" + grocery.getProduct_id() + "\"", null);
         db.close();
-
-        logGroceriesList("deleteGrocery", grocery.getList_name());
     }
 
     //DELETE all groceries from a list
@@ -165,6 +161,7 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
         return resList;
     }
 
+    // TODO: Put test purpose methods here
     public void logGroceriesList(String function, String listName) {
         ArrayList<String> a = getGroceriesNameByListName(listName);
         for (String s : a) {

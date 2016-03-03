@@ -19,13 +19,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".settings.SettingsActivity" />
+        </activity>
+        <activity
+            android:name=".managesellers.SellerListActivity"
+            android:label="@string/title_seller_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="yithian.cosacompro.SettingsActivity" />
+                android:value="yithian.cosacompro.MainActivity" />
+        </activity>
+        <activity
+            android:name=".managesellers.SellerDetailActivity"
+            android:label="@string/title_seller_detail"
+            android:parentActivityName=".managesellers.SellerListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="yithian.cosacompro.managesellers.SellerListActivity" />
         </activity>
     </application>
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -57,9 +58,15 @@ public class SellerHandler extends SQLiteOpenHelper {
     }
 
     // DELETE a seller from the table
-    public void deleteSellerbyID(String sellerID) {
+    public void deleteSeller(Seller seller) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SELLER_ID + "=\"" + sellerID + "\";");
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SELLER_ID + "=" + seller.getSeller_id() + ";");
+        db.close();
+    }
+
+    public void deleteSellerbyID(int sellerID) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SELLER_ID + "=" + sellerID + ";");
         db.close();
     }
 
@@ -76,10 +83,34 @@ public class SellerHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // GET all Sellers
+    public ArrayList<Seller> getSellers() {
+        ArrayList<Seller> resSellerList = new ArrayList<Seller>();
+        SQLiteDatabase db = getWritableDatabase();
+        Seller tempSeller;
+        int temp_seller_id;
+        String temp_seller_name, temp_address, temp_city;
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            temp_seller_id = c.getInt(c.getColumnIndex("seller_id"));
+            temp_seller_name = c.getString(c.getColumnIndex("seller_name"));
+            temp_address = c.getString(c.getColumnIndex("address"));
+            temp_city = c.getString(c.getColumnIndex("city"));
+            tempSeller = new Seller(temp_seller_id, temp_seller_name, temp_address, temp_city);
+            resSellerList.add(tempSeller);
+            c.moveToNext();
+        }
+        return resSellerList;
+    }
+
     //Print out the sellers as ArrayList
     public ArrayList<String> sellersToArrayList() {
-        String temp = "";
-        int index = 1;
+        String temp;
         ArrayList<String> resList = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
 
@@ -89,14 +120,13 @@ public class SellerHandler extends SQLiteOpenHelper {
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
-            temp = "ID#" + c.getColumnIndex("seller_id") + ": ";
+            temp = "ID #" + c.getInt(c.getColumnIndex("seller_id")) + ": ";
             if (c.getString(c.getColumnIndex("seller_name")) != null) {
                 temp += c.getString(c.getColumnIndex("seller_name")) + " (";
                 temp += c.getString(c.getColumnIndex("address")) + ", ";
                 temp += c.getString(c.getColumnIndex("city")) + ")";
             }
             resList.add(temp);
-            index++;
             c.moveToNext();
         }
         db.close();

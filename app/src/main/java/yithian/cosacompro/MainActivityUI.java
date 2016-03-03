@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
+import yithian.cosacompro.settings.SettingsManager;
 
 public class MainActivityUI {
     private String defaultList;

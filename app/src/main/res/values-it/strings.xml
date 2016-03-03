@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CosaCompro</string>
+    <string name="action_manageSellers">Gestisci venditori</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="default_list_title">Lista principale</string>
+    <string name="default_list_summary">Lista che verrà visualizzata nella pagina principale.</string>
+    <string name="manageList_title">Modifica Lista</string>
+</resources>

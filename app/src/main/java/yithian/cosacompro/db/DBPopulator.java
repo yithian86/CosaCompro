@@ -85,7 +85,7 @@ public class DBPopulator extends SQLiteOpenHelper {
         // Wipe out table content
         categoryHandler.deleteAllCategories();
 
-        String cat_name[] = {"Acqua", "Bevande", "Carne", "Cereali", "Dolci",
+        String cat_name[] = {"Acqua", "Bevande", "Caffè e The", "Carne", "Cereali", "Dolci",
                 "Frutta", "Funghi", "Latte e derivati", "Legumi", "Molluschi",
                 "Ortaggi", "Pane", "Pasta", "Pesce", "Salse e Sughi", "Uova", "Zucchero", "Altro"};
         for (int i = 0; i < cat_name.length; i++) {
@@ -108,6 +108,8 @@ public class DBPopulator extends SQLiteOpenHelper {
             product = new Product("-", product_name[i], brand[i], description[i], category[i]);
             productHandler.addProduct(product);
         }
+        product = new Product("8001120912916", "Infuso Melissa", "Vivi Verde COOP", "36gr", "Caffè e The");
+        productHandler.addProduct(product);
     }
 
     private void populateGroceriesList() {
@@ -129,11 +131,11 @@ public class DBPopulator extends SQLiteOpenHelper {
         // Wipe out table content
         productPriceHandler.deleteAllProductPrices();
 
-        int[] product_id = {1, 2, 3};
-        int[] seller_id = {1, 1, 1};
-        double[] normal_price = {1.29, 0.72, 9.99};
-        double[] special_price = {1.05, 0.65, 8.99};
-        String[] special_date = {"24/01/16", "2/09/15", "5/8/85"};
+        int[] product_id = {1, 2, 3, 5};
+        int[] seller_id = {1, 1, 1, 1};
+        double[] normal_price = {1.29, 0.72, 9.99, 1.81};
+        double[] special_price = {1.05, 0.65, 8.99, 1.53};
+        String[] special_date = {"24/01/16", "2/09/15", "5/8/85", "20/02/14"};
 
         for (int i = 0; i < product_id.length; i++) {
             productPrice = new ProductPrice(product_id[i], seller_id[i], normal_price[i], special_price[i], special_date[i]);

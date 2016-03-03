@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="true"
+    android:contextClickable="true">
+
+    <TextView
+        android:id="@+id/seller_name_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:text="seller_name"
+        android:layout_weight=".7"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/seller_address_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:text="seller_address"
+        android:layout_weight=".3"
+        android:textSize="14dp" />
+</LinearLayout>

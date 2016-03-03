@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:contextClickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/seller_name_TextView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:text="Punto vendita:"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_column="0"
+                android:layout_span="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seller_name_input"
+                android:text="seller_name"
+                android:editable="true"
+                android:layout_gravity="top|left"
+                android:layout_column="1"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:maxLength="25" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Indirizzo:"
+                android:id="@+id/seller_address_TextView"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_column="0"
+                android:layout_span="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seller_address_input"
+                android:text="seller_address"
+                android:editable="true"
+                android:layout_gravity="top|left"
+                android:layout_column="1"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:maxLength="50" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Città:"
+                android:id="@+id/seller_city_TextView"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_column="0"
+                android:layout_span="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seller_city_input"
+                android:text="seller_city"
+                android:editable="true"
+                android:layout_gravity="top|left"
+                android:layout_column="1"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:maxLength="25" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="GPS Coords:"
+                android:id="@+id/GPSCoords_TextView"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_column="0"
+                android:layout_span="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/GPSLat_input"
+                android:layout_column="1"
+                android:text="(coming"
+                android:enabled="false"
+                android:layout_gravity="top|right"
+                android:layout_span="1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/GPSLon_input"
+                android:layout_column="2"
+                android:text="soon)"
+                android:enabled="false"
+                android:layout_gravity="top|left"
+                android:layout_span="1" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Applica Modifiche"
+        android:id="@+id/applySellerChanges_button"
+        android:layout_gravity="bottom|center_horizontal"
+        android:singleLine="true"
+        android:elegantTextHeight="false" />
+
+</LinearLayout>

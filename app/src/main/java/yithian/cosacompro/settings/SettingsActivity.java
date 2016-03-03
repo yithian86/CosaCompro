@@ -1,4 +1,4 @@
-package yithian.cosacompro;
+package yithian.cosacompro.settings;
 
 
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package yithian.cosacompro;
+package yithian.cosacompro.settings;
 
 
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 
 import java.util.ArrayList;
 
+import yithian.cosacompro.R;
 import yithian.cosacompro.db.dbhandlers.ListHandler;
 
 public class SettingsFragment extends PreferenceFragment {
