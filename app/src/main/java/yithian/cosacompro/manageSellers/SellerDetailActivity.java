@@ -8,6 +8,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -52,12 +53,14 @@ public class SellerDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putInt("current_seller_id", getIntent().getIntExtra("current_seller_id", -1));
-            arguments.putString("current_seller_name", getIntent().getStringExtra("current_seller_name"));
-            arguments.putString("current_seller_address", getIntent().getStringExtra("current_seller_address"));
-            arguments.putString("current_seller_city", getIntent().getStringExtra("current_seller_city"));
+            if(getIntent().getIntExtra("open_mode_flag", 0) != 2) {
+                arguments.putInt("current_seller_id", getIntent().getIntExtra("current_seller_id", -1));
+                arguments.putString("current_seller_name", getIntent().getStringExtra("current_seller_name"));
+                arguments.putString("current_seller_address", getIntent().getStringExtra("current_seller_address"));
+                arguments.putString("current_seller_city", getIntent().getStringExtra("current_seller_city"));
+            }
             arguments.putInt("open_mode_flag", getIntent().getIntExtra("open_mode_flag", 0));
-            
+
             SellerDetailFragment fragment = new SellerDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

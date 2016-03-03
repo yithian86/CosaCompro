@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -45,16 +44,32 @@ public class SellerHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //ADD a new row to the database
-    public void addSeller(Seller seller) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_SELLER_NAME, seller.getSeller_name());
-        if (seller.getAddress() != null) values.put(COLUMN_ADDRESS, seller.getAddress());
-        if (seller.getCity() != null) values.put(COLUMN_CITY, seller.getCity());
+    // ADD a new Seller to the database
+    public void addSeller(Seller new_seller) {
+        if (new_seller != null) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SELLER_NAME, new_seller.getSeller_name());
+            values.put(COLUMN_ADDRESS, new_seller.getAddress());
+            values.put(COLUMN_CITY, new_seller.getCity());
 
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+            SQLiteDatabase db = getWritableDatabase();
+            db.insert(TABLE_NAME, null, values);
+            db.close();
+        }
+    }
+
+    // UPDATE an existing Seller
+    public void updateSeller(Seller updated_seller) {
+        if (updated_seller != null) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_SELLER_NAME, updated_seller.getSeller_name());
+            values.put(COLUMN_ADDRESS, updated_seller.getAddress());
+            values.put(COLUMN_CITY, updated_seller.getCity());
+
+            SQLiteDatabase db = getWritableDatabase();
+            db.update(TABLE_NAME, values, COLUMN_SELLER_ID + "=" + updated_seller.getSeller_id(), null);
+            db.close();
+        }
     }
 
     // DELETE a seller from the table

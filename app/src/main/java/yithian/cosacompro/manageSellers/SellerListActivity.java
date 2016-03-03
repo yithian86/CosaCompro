@@ -3,7 +3,6 @@ package yithian.cosacompro.managesellers;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import yithian.cosacompro.db.dbclasses.Seller;
 
 public class SellerListActivity extends AppCompatActivity {
     private boolean mTwoPane;
+    private SellerViewAdapter sellerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +30,6 @@ public class SellerListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -47,6 +39,14 @@ public class SellerListActivity extends AppCompatActivity {
         View recyclerView = findViewById(R.id.seller_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sellerViewAdapter.addSeller();
+            }
+        });
 
         if (findViewById(R.id.seller_detail_container) != null) {
             // The detail container view will be present only in the
@@ -78,6 +78,7 @@ public class SellerListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         DBPopulator dbPopulator = new DBPopulator(this.getBaseContext(), null, null, 1);
         ArrayList<Seller> sellersList = dbPopulator.getSellerHandler().getSellers();
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(sellersList, this));
+        sellerViewAdapter = new SellerViewAdapter(sellersList, this);
+        recyclerView.setAdapter(sellerViewAdapter);
     }
 }

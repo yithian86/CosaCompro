@@ -18,11 +18,11 @@ import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.Seller;
 import yithian.cosacompro.db.dbhandlers.SellerHandler;
 
-public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+public class SellerViewAdapter extends RecyclerView.Adapter<SellerViewAdapter.ViewHolder> {
     private ArrayList<Seller> sellersList;
     private Context context;
 
-    public SimpleItemRecyclerViewAdapter(ArrayList<Seller> sellersList, Context context) {
+    public SellerViewAdapter(ArrayList<Seller> sellersList, Context context) {
         this.sellersList = sellersList;
         this.context = context;
     }
@@ -91,7 +91,7 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
         alertDialog.show();
     }
 
-    private void openSellerDetail(ViewHolder holder, int open_mode_flag) {
+    public void openSellerDetail(ViewHolder holder, int open_mode_flag) {
         Intent intent = new Intent(context, SellerDetailActivity.class);
         intent.putExtra("current_seller_id", holder.seller.getSeller_id());
         intent.putExtra("current_seller_name", holder.seller.getSeller_name());
@@ -107,11 +107,17 @@ public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleIt
         sellersList.remove(index);
     }
 
-    private void deleteSeller(ViewHolder holder) {
+    public void deleteSeller(ViewHolder holder) {
         SellerHandler sellerHandler = new DBPopulator(context, null, null, 1).getSellerHandler();
         sellerHandler.deleteSeller(holder.seller);
         removeFromList(holder.seller);
         notifyDataSetChanged();
+    }
+
+    public void addSeller() {
+        Intent intent = new Intent(context, SellerDetailActivity.class);
+        intent.putExtra("open_mode_flag", 2);
+        context.startActivity(intent);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

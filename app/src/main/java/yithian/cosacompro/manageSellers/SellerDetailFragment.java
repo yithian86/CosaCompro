@@ -1,9 +1,11 @@
 package yithian.cosacompro.managesellers;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import yithian.cosacompro.R;
+import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.Seller;
 
 /**
@@ -40,16 +43,16 @@ public class SellerDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey("current_seller_name")) {
+        if (getArguments().containsKey("open_mode_flag")) {
             // Load values passed by SellerDetailActivity
             open_mode_flag = getArguments().getInt("open_mode_flag");
-            int seller_id = getArguments().getInt("current_seller_id");
-            String seller_name = getArguments().getString("current_seller_name");
-            String seller_address = getArguments().getString("current_seller_address");
-            String seller_city = getArguments().getString("current_seller_city");
-
-            current_seller = new Seller(seller_id, seller_name, seller_address, seller_city);
-            Log.d("current_seller", current_seller.getSeller_name());
+            if (open_mode_flag != 2) {
+                int seller_id = getArguments().getInt("current_seller_id");
+                String seller_name = getArguments().getString("current_seller_name");
+                String seller_address = getArguments().getString("current_seller_address");
+                String seller_city = getArguments().getString("current_seller_city");
+                current_seller = new Seller(seller_id, seller_name, seller_address, seller_city);
+            }
 
             Activity activity = this.getActivity();
             appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -67,19 +70,20 @@ public class SellerDetailFragment extends Fragment {
         GPSLon_input = (TextView) rootView.findViewById(R.id.GPSLon_input);
         applySellerChanges_button = (Button) rootView.findViewById(R.id.applySellerChanges_button);
 
-        // Show the dummy content as text in a TextView.
-        if (current_seller != null) {
-            switch (open_mode_flag) {
-                case 0:
-                    openReadOnly();
-                    break;
-                case 1:
-                    openEditMode();
-                    break;
-                case 2:
-                    openAddMode();
-                    break;
-            }
+
+        switch (open_mode_flag) {
+            case 0:
+                openReadOnly();
+                break;
+            case 1:
+                openEditMode();
+                break;
+            case 2:
+                openAddMode();
+                break;
+            default:
+                openReadOnly();
+                break;
         }
         return rootView;
     }
@@ -90,70 +94,89 @@ public class SellerDetailFragment extends Fragment {
         seller_city_input.setText(current_seller.getCity());
     }
 
+    private void triggerUI(boolean trigger) {
+        // Trigger input fields
+        seller_name_input.setEnabled(trigger);
+        seller_address_input.setEnabled(trigger);
+        seller_city_input.setEnabled(trigger);
+        GPSLat_input.setEnabled(trigger);
+        GPSLon_input.setEnabled(trigger);
+        // Set focus
+        seller_name_input.setFocusable(trigger);
+        seller_address_input.setFocusable(trigger);
+        seller_city_input.setFocusable(trigger);
+        GPSLat_input.setFocusable(trigger);
+        GPSLon_input.setFocusable(trigger);
+        // Trigger the input button
+        if (trigger)
+            applySellerChanges_button.setVisibility(View.VISIBLE);
+        else applySellerChanges_button.setVisibility(View.GONE);
+    }
+
     private void openReadOnly() {
-        // Load values
-        loadSellerValues();
-        // Set title on top
-        if (appBarLayout != null) {
-            appBarLayout.setTitle("Info punto vendita");
+        if (current_seller != null) {
+            // Load values in UI
+            loadSellerValues();
+            // Set title on top
+            if (appBarLayout != null) {
+                appBarLayout.setTitle("Info punto vendita");
+            }
+
+            // Disable UI
+            triggerUI(false);
         }
-        // Disable input
-        seller_name_input.setEnabled(false);
-        seller_address_input.setEnabled(false);
-        seller_city_input.setEnabled(false);
-        GPSLat_input.setEnabled(false);
-        GPSLon_input.setEnabled(false);
-        // Disable focus
-        seller_name_input.setFocusable(false);
-        seller_address_input.setFocusable(false);
-        seller_city_input.setFocusable(false);
-        GPSLat_input.setFocusable(false);
-        GPSLon_input.setFocusable(false);
-        // Hide the input button
-        applySellerChanges_button.setVisibility(View.GONE);
     }
 
     private void openEditMode() {
-        // Load values
-        loadSellerValues();
-        // Set title on top
-        if (appBarLayout != null) {
-            appBarLayout.setTitle("Modifica punto vendita");
+        if (current_seller != null) {
+            // Load values in UI
+            loadSellerValues();
+
+            // Set title on top
+            if (appBarLayout != null) {
+                appBarLayout.setTitle("Modifica punto vendita");
+            }
+
+            // Enable UI
+            triggerUI(true);
+
+            applySellerChanges_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Update current Seller, then update the DB
+                    current_seller.setSeller_name(seller_name_input.getText().toString());
+                    current_seller.setAddress(seller_address_input.getText().toString());
+                    current_seller.setCity(seller_city_input.getText().toString());
+                    new DBPopulator(v.getContext(), null, null, 1).getSellerHandler().updateSeller(current_seller);
+                    // Go back to the previous screen
+                    NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+                }
+            });
         }
-        // Enable input
-        seller_name_input.setEnabled(true);
-        seller_address_input.setEnabled(true);
-        seller_city_input.setEnabled(true);
-        GPSLat_input.setEnabled(true);
-        GPSLon_input.setEnabled(true);
-        // Set focus
-        seller_address_input.setFocusable(true);
-        seller_city_input.setFocusable(true);
-        GPSLat_input.setFocusable(true);
-        GPSLon_input.setFocusable(true);
-        seller_name_input.setFocusable(true);
-        // Show the input button
-        applySellerChanges_button.setVisibility(View.VISIBLE);
     }
 
     private void openAddMode() {
+        Log.d("Boh", "fin qui todo bien");
         // Set title on top
         if (appBarLayout != null) {
             appBarLayout.setTitle("Aggiungi punto vendita");
         }
-        // Enable input
-        seller_name_input.setEnabled(true);
-        seller_address_input.setEnabled(true);
-        seller_city_input.setEnabled(true);
-        GPSLat_input.setEnabled(true);
-        GPSLon_input.setEnabled(true);
-        // Set focus
-        seller_address_input.setFocusable(true);
-        seller_city_input.setFocusable(true);
-        GPSLat_input.setFocusable(true);
-        GPSLon_input.setFocusable(true);
-        seller_name_input.setFocusable(true);
-        // Show the input button
-        applySellerChanges_button.setVisibility(View.VISIBLE);
+
+        // Enable UI
+        triggerUI(true);
+
+        applySellerChanges_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Update current Seller, then update the DB
+                String seller_name = seller_name_input.getText().toString();
+                String seller_address = seller_address_input.getText().toString();
+                String seller_city = seller_city_input.getText().toString();
+                current_seller = new Seller(seller_name, seller_address, seller_city);
+                new DBPopulator(v.getContext(), null, null, 1).getSellerHandler().addSeller(current_seller);
+                // Go back to the previous screen
+                NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+            }
+        });
     }
 }
