@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 import yithian.cosacompro.db.dbclasses.Product;
+import yithian.cosacompro.db.dbclasses.Seller;
 
 public class ProductHandler extends SQLiteOpenHelper {
 
@@ -55,7 +56,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //ADD a new row to the database
+    // ADD a new row to the database
     public void addProduct(Product product) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_BARCODE, product.getBarcode());
@@ -68,6 +69,22 @@ public class ProductHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // UPDATE an existing Product
+    public void updateProduct(Product updated_product) {
+        if (updated_product != null) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_BARCODE, updated_product.getBarcode());
+            values.put(COLUMN_PRODUCT_NAME, updated_product.getProduct_name());
+            values.put(COLUMN_BRAND, updated_product.getBrand());
+            values.put(COLUMN_DESCRIPTION, updated_product.getDescription());
+            values.put(COLUMN_CATEGORY, updated_product.getCategory());
+
+            SQLiteDatabase db = getWritableDatabase();
+            db.update(TABLE_NAME, values, COLUMN_PRODUCT_ID + "=" + updated_product.getProduct_id(), null);
+            db.close();
+        }
+    }
+
     // DELETE all products from the DB
     public void deleteAllProducts() {
         SQLiteDatabase db = getWritableDatabase();
@@ -75,41 +92,41 @@ public class ProductHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //DELETE a product by providing its ID
-    public void deleteProductbyID(String productID) {
+    //DELETE a product
+    public void deleteProduct(Product product) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_ID + "=\"" + productID + "\";");
+        db.delete(TABLE_NAME, COLUMN_PRODUCT_ID + "=" + product.getProduct_id(), null);
         db.close();
     }
 
-    //DELETE a product by providing its barcode
-    public void deleteProductbyBarcode(String barcode) {
+    // GET all Products
+    public ArrayList<Product> getProducts() {
+        ArrayList<Product> resProductList = new ArrayList<Product>();
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_BARCODE + "=\"" + barcode + "\";");
-        db.close();
-    }
-
-    //GET a product name by providing its product_id
-    public String getProductName(int productID) {
-        String productName = "";
-        SQLiteDatabase db = getWritableDatabase();
+        Product tempProduct;
+        int temp_product_id;
+        String temp_product_name, temp_brand, temp_description, temp_barcode, temp_category;
 
         //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_PRODUCT_ID + "=\"" + productID + "\";", null);
+        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
         //Move cursor to the first row
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME)) != null) {
-                productName = c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME));
-            }
+            temp_product_id = c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID));
+            temp_product_name = c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME));
+            temp_brand = c.getString(c.getColumnIndex(COLUMN_BRAND));
+            temp_barcode = c.getString(c.getColumnIndex(COLUMN_BARCODE));
+            temp_category = c.getString(c.getColumnIndex(COLUMN_CATEGORY));
+            temp_description = c.getString(c.getColumnIndex(COLUMN_DESCRIPTION));
+            tempProduct = new Product(temp_product_id, temp_product_name, temp_brand, temp_category, temp_barcode, temp_description);
+            resProductList.add(tempProduct);
             c.moveToNext();
         }
-        db.close();
-        return productName;
+        return resProductList;
     }
 
-    //GET a product ID by providing its name
+    // GET a product ID by providing its name
     public int getProductID(String productName) {
         int productID = -1;
         SQLiteDatabase db = getWritableDatabase();
@@ -130,7 +147,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         return productID;
     }
 
-    //GET all products and store each product_name in an ArrayList
+    // GET all products and store each product_name in an ArrayList
     public ArrayList<String> getProductNames() {
         ArrayList<String> allProducts = new ArrayList<String>();
         SQLiteDatabase db = getWritableDatabase();
@@ -148,26 +165,4 @@ public class ProductHandler extends SQLiteOpenHelper {
         }
         return allProducts;
     }
-
-
-    //TODO: Print out the table as a String
-    /* public String databaseToString(){
-        String dbString ="";
-        SQLiteDatabase db = getWritableDatabase();
-
-        //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
-        //Move cursor to the first row
-        c.moveToFirst();
-
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex("productname")) != null){
-                dbString += c.getString(c.getColumnIndex("productname"));
-                dbString += "\n";
-            }
-            c.moveToNext();
-        }
-        db.close();
-        return dbString;
-    } */
 }

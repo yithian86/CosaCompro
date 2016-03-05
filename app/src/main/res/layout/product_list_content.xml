@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:baselineAligned="true"
+    android:contextClickable="true"
+    android:orientation="vertical"
+    android:columnCount="2"
+    android:rowCount="2"
+    android:background="@drawable/list_item_border">
+
+    <TextView
+        android:id="@+id/product_name_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="product_name"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textStyle="bold"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_marginRight="6dp" />
+
+    <TextView
+        android:id="@+id/product_brand_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:text="product_brand"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14dp"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1" />
+
+    <TextView
+        android:id="@+id/product_description_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="product_description"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14dp"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_columnSpan="2"
+        android:layout_rowSpan="1" />
+
+</GridLayout>

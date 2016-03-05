@@ -1,4 +1,4 @@
-package yithian.cosacompro.managesellers;
+package yithian.cosacompro.manage_sellers;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

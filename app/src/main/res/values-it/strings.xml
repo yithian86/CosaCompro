@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CosaCompro</string>
-    <string name="action_manageSellers">Gestisci venditori</string>
     <string name="action_settings">Impostazioni</string>
     <string name="default_list_title">Lista principale</string>
     <string name="default_list_summary">Lista che verrà visualizzata nella pagina principale.</string>
     <string name="manageList_title">Modifica Lista</string>
+    <string name="title_seller_list">Gestione Punti Vendita</string>
+    <string name="title_seller_add">Aggiungi Punto Vendita</string>
+    <string name="title_seller_edit">Modifica Punto Vendita</string>
+    <string name="title_seller_info">Info Punto Vendita</string>
+    <string name="action_manageSellers">Gestisci Punti Vendita</string>
+    <string name="title_product_add">Aggiungi Prodotto</string>
+    <string name="title_product_edit">Modifica Prodotto</string>
+    <string name="title_product_info">Info Prodotto</string>
+    <string name="title_product_list">Gestisci Prodotti</string>
+    <string name="action_manageProducts">Gestisci Prodotti</string>
 </resources>

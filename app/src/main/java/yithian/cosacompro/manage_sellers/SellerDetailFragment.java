@@ -1,12 +1,9 @@
-package yithian.cosacompro.managesellers;
+package yithian.cosacompro.manage_sellers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +31,6 @@ public class SellerDetailFragment extends Fragment {
     private TextView GPSLat_input;
     private TextView GPSLon_input;
     private Button applySellerChanges_button;
-    private CollapsingToolbarLayout appBarLayout;
 
     public SellerDetailFragment() {
     }
@@ -44,7 +40,7 @@ public class SellerDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey("open_mode_flag")) {
-            // Load values passed by SellerDetailActivity
+            // Load values passed by ProductDetailActivity
             open_mode_flag = getArguments().getInt("open_mode_flag");
             if (open_mode_flag != 2) {
                 int seller_id = getArguments().getInt("current_seller_id");
@@ -53,9 +49,6 @@ public class SellerDetailFragment extends Fragment {
                 String seller_city = getArguments().getString("current_seller_city");
                 current_seller = new Seller(seller_id, seller_name, seller_address, seller_city);
             }
-
-            Activity activity = this.getActivity();
-            appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
         }
     }
 
@@ -69,7 +62,6 @@ public class SellerDetailFragment extends Fragment {
         GPSLat_input = (TextView) rootView.findViewById(R.id.GPSLat_input);
         GPSLon_input = (TextView) rootView.findViewById(R.id.GPSLon_input);
         applySellerChanges_button = (Button) rootView.findViewById(R.id.applySellerChanges_button);
-
 
         switch (open_mode_flag) {
             case 0:
@@ -118,10 +110,7 @@ public class SellerDetailFragment extends Fragment {
             // Load values in UI
             loadSellerValues();
             // Set title on top
-            if (appBarLayout != null) {
-                appBarLayout.setTitle("Info punto vendita");
-            }
-
+            this.getActivity().setTitle(R.string.title_seller_info);
             // Disable UI
             triggerUI(false);
         }
@@ -131,12 +120,8 @@ public class SellerDetailFragment extends Fragment {
         if (current_seller != null) {
             // Load values in UI
             loadSellerValues();
-
             // Set title on top
-            if (appBarLayout != null) {
-                appBarLayout.setTitle("Modifica punto vendita");
-            }
-
+            this.getActivity().setTitle(R.string.title_seller_edit);
             // Enable UI
             triggerUI(true);
 
@@ -156,12 +141,8 @@ public class SellerDetailFragment extends Fragment {
     }
 
     private void openAddMode() {
-        Log.d("Boh", "fin qui todo bien");
         // Set title on top
-        if (appBarLayout != null) {
-            appBarLayout.setTitle("Aggiungi punto vendita");
-        }
-
+        this.getActivity().setTitle(R.string.title_seller_add);
         // Enable UI
         triggerUI(true);
 

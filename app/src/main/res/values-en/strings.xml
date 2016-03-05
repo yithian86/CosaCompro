@@ -5,5 +5,14 @@
     <string name="default_list_title">Default list</string>
     <string name="default_list_summary">Select the list that will be loaded on startup.</string>
     <string name="action_settings">Settings</string>
+    <string name="title_seller_list">Manage Seller</string>
+    <string name="title_seller_add">Add Seller</string>
+    <string name="title_seller_edit">Edit Seller</string>
+    <string name="title_seller_info">Seller Info</string>
     <string name="action_manageSellers">Manage Sellers</string>
+    <string name="title_product_add">Add Product</string>
+    <string name="title_product_edit">Edit Product</string>
+    <string name="title_product_info">Product Info</string>
+    <string name="title_product_list">Manage Product</string>
+    <string name="action_manageProducts">Manage Products</string>
 </resources>

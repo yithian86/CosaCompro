@@ -31,21 +31,21 @@ public class Seller {
         return seller_name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
     // SETTERS
     public void setSeller_name(String seller_name) {
         this.seller_name = seller_name;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public void setCity(String city) {

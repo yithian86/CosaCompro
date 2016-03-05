@@ -1,4 +1,4 @@
-package yithian.cosacompro.managesellers;
+package yithian.cosacompro.manage_sellers;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -131,11 +131,6 @@ public class SellerViewAdapter extends RecyclerView.Adapter<SellerViewAdapter.Vi
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.seller_name_textview);
             mContentView = (TextView) view.findViewById(R.id.seller_address_textview);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

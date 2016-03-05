@@ -79,18 +79,6 @@ public class SellerHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteSellerbyID(int sellerID) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SELLER_ID + "=" + sellerID + ";");
-        db.close();
-    }
-
-    public void deleteSellerbyName(String sellerName) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_SELLER_NAME + "=\"" + sellerName + "\";");
-        db.close();
-    }
-
     // DELETE all sellers from the table
     public void deleteAllSellers() {
         SQLiteDatabase db = getWritableDatabase();
@@ -112,39 +100,14 @@ public class SellerHandler extends SQLiteOpenHelper {
         c.moveToFirst();
 
         while (!c.isAfterLast()) {
-            temp_seller_id = c.getInt(c.getColumnIndex("seller_id"));
-            temp_seller_name = c.getString(c.getColumnIndex("seller_name"));
-            temp_address = c.getString(c.getColumnIndex("address"));
-            temp_city = c.getString(c.getColumnIndex("city"));
+            temp_seller_id = c.getInt(c.getColumnIndex(COLUMN_SELLER_ID));
+            temp_seller_name = c.getString(c.getColumnIndex(COLUMN_SELLER_NAME));
+            temp_address = c.getString(c.getColumnIndex(COLUMN_ADDRESS));
+            temp_city = c.getString(c.getColumnIndex(COLUMN_CITY));
             tempSeller = new Seller(temp_seller_id, temp_seller_name, temp_address, temp_city);
             resSellerList.add(tempSeller);
             c.moveToNext();
         }
         return resSellerList;
-    }
-
-    //Print out the sellers as ArrayList
-    public ArrayList<String> sellersToArrayList() {
-        String temp;
-        ArrayList<String> resList = new ArrayList<String>();
-        SQLiteDatabase db = getWritableDatabase();
-
-        //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
-        //Move cursor to the first row
-        c.moveToFirst();
-
-        while (!c.isAfterLast()) {
-            temp = "ID #" + c.getInt(c.getColumnIndex("seller_id")) + ": ";
-            if (c.getString(c.getColumnIndex("seller_name")) != null) {
-                temp += c.getString(c.getColumnIndex("seller_name")) + " (";
-                temp += c.getString(c.getColumnIndex("address")) + ", ";
-                temp += c.getString(c.getColumnIndex("city")) + ")";
-            }
-            resList.add(temp);
-            c.moveToNext();
-        }
-        db.close();
-        return resList;
     }
 }

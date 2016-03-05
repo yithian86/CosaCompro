@@ -11,10 +11,15 @@
 
     <!-- ManageSellers -->
     <string name="action_manageSellers">Manage Sellers</string>
+    <string name="title_seller_list">Manage Seller</string>
+    <string name="title_seller_info">Seller Info</string>
+    <string name="title_seller_add">Add Seller</string>
+    <string name="title_seller_edit">Edit Seller</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_seller_list">Sellers</string>
-    <string name="title_seller_detail">Seller Detail</string>
-
+    <!-- ManageProducts -->
+    <string name="action_manageProducts">Manage Products</string>
+    <string name="title_product_list">Manage Product</string>
+    <string name="title_product_info">Product Info</string>
+    <string name="title_product_add">Add Product</string>
+    <string name="title_product_edit">Edit Product</string>
 </resources>

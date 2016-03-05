@@ -10,7 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yithian.cosacompro.db.DBPopulator;
-import yithian.cosacompro.managesellers.SellerListActivity;
+import yithian.cosacompro.manage_products.ProductListActivity;
+import yithian.cosacompro.manage_sellers.SellerListActivity;
 import yithian.cosacompro.settings.SettingsActivity;
 import yithian.cosacompro.settings.SettingsManager;
 
@@ -70,9 +71,12 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 break;
-
             case R.id.action_manageSellers:
                 intent = new Intent(MainActivity.this, SellerListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_manageProducts:
+                intent = new Intent(MainActivity.this, ProductListActivity.class);
                 startActivity(intent);
                 break;
         }

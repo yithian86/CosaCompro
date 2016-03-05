@@ -12,4 +12,9 @@
         android:orderInCategory="101"
         android:title="@string/action_manageSellers"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_manageProducts"
+        android:orderInCategory="102"
+        android:title="@string/action_manageProducts"
+        app:showAsAction="never" />
 </menu>

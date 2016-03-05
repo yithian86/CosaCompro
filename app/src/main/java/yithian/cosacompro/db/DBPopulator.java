@@ -102,13 +102,13 @@ public class DBPopulator extends SQLiteOpenHelper {
 
         String[] product_name = {"Certosa", "Latte parzialmente scremato", "Passata di pomodoro", "Mozzarella Santa Lucia"};
         String[] brand = {"Galbani", "Parmalat", "Cirio", "Galbani"};
-        String[] description = {"165gr", "1 litro", "700gr", "125gr x 3"};
         String[] category = {"Latte e derivati", "Latte e derivati", "Salse e Sughi", "Latte e derivati"};
+        String[] description = {"165gr", "1 litro", "700gr", "125gr x 3"};
         for (int i = 0; i < brand.length; i++) {
-            product = new Product("-", product_name[i], brand[i], description[i], category[i]);
+            product = new Product(product_name[i], brand[i], category[i], "-", description[i]);
             productHandler.addProduct(product);
         }
-        product = new Product("8001120912916", "Infuso Melissa", "Vivi Verde COOP", "36gr", "Caffè e The");
+        product = new Product("Infuso Melissa", "Vivi Verde COOP", "Caffè e The", "8001120912916", "36gr");
         productHandler.addProduct(product);
     }
 
