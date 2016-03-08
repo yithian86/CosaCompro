@@ -18,13 +18,12 @@ import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.Seller;
 
 public class SellerListActivity extends AppCompatActivity {
-    private boolean mTwoPane;
     private SellerViewAdapter sellerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seller_list);
+        setContentView(R.layout.manage_sellers_activity_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,28 +46,12 @@ public class SellerListActivity extends AppCompatActivity {
                 sellerViewAdapter.addSeller();
             }
         });
-
-        if (findViewById(R.id.seller_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            //*** TODO: Alex: I put this thing to false while the original was "= true".
-            //*** TODO: I wanted to avoid the double view on large-screen layouts
-            mTwoPane = false;
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }

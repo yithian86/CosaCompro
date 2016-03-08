@@ -30,7 +30,7 @@ public class SellerViewAdapter extends RecyclerView.Adapter<SellerViewAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.seller_list_content, parent, false);
+                .inflate(R.layout.manage_sellers_list_content, parent, false);
         return new ViewHolder(view);
     }
 

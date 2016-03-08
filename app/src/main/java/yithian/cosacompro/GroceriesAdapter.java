@@ -51,7 +51,7 @@ public class GroceriesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
-            view = LayoutInflater.from(main_context).inflate(R.layout.row, null);
+            view = LayoutInflater.from(main_context).inflate(R.layout.home_row, null);
         }
         // Retrieve the current element (a GroceriesList object)
         GroceriesList curGrocerie = (GroceriesList) getItem(position);

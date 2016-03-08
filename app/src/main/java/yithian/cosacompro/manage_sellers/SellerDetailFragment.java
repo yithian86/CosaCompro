@@ -54,7 +54,7 @@ public class SellerDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.seller_detail, container, false);
+        rootView = inflater.inflate(R.layout.manage_sellers_detail, container, false);
         // Initialize the UI
         seller_name_input = (TextView) rootView.findViewById(R.id.seller_name_input);
         seller_address_input = (TextView) rootView.findViewById(R.id.seller_address_input);
@@ -91,14 +91,14 @@ public class SellerDetailFragment extends Fragment {
         seller_name_input.setEnabled(trigger);
         seller_address_input.setEnabled(trigger);
         seller_city_input.setEnabled(trigger);
-        GPSLat_input.setEnabled(trigger);
-        GPSLon_input.setEnabled(trigger);
+//        GPSLat_input.setEnabled(trigger);
+//        GPSLon_input.setEnabled(trigger);
         // Set focus
         seller_name_input.setFocusable(trigger);
         seller_address_input.setFocusable(trigger);
         seller_city_input.setFocusable(trigger);
-        GPSLat_input.setFocusable(trigger);
-        GPSLon_input.setFocusable(trigger);
+//        GPSLat_input.setFocusable(trigger);
+//        GPSLon_input.setFocusable(trigger);
         // Trigger the input button
         if (trigger)
             applySellerChanges_button.setVisibility(View.VISIBLE);

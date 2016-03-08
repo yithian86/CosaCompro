@@ -22,4 +22,7 @@
     <string name="title_product_info">Product Info</string>
     <string name="title_product_add">Add Product</string>
     <string name="title_product_edit">Edit Product</string>
+
+    <!-- Nothing -->
+    <string name="notification_text">Ma vai a lavurà! Cialtrùn!</string>
 </resources>

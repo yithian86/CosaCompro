@@ -59,7 +59,7 @@ public class ProductDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.product_detail, container, false);
+        rootView = inflater.inflate(R.layout.manage_products_detail, container, false);
         // Initialize the UI
         prod_name_input = (TextView) rootView.findViewById(R.id.prod_name_input);
         prod_brand_input = (TextView) rootView.findViewById(R.id.prod_brand_input);
