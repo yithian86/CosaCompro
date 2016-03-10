@@ -23,6 +23,13 @@
     <string name="title_product_add">Add Product</string>
     <string name="title_product_edit">Edit Product</string>
 
+    <!-- ManageProductPrices -->
+    <string name="action_manageProductPrices">Manage Product Prices</string>
+    <string name="title_productprice_list">Manage Product Price</string>
+    <string name="title_productprice_info">Product Price Info</string>
+    <string name="title_productprice_add">Add Product Price</string>
+    <string name="title_productprice_edit">Edit Product Price</string>
+
     <!-- Nothing -->
     <string name="notification_text">Ma vai a lavurà! Cialtrùn!</string>
 </resources>

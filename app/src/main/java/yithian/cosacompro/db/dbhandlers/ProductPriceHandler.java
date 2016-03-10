@@ -3,8 +3,13 @@ package yithian.cosacompro.db.dbhandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 import yithian.cosacompro.db.dbclasses.ProductPrice;
 
@@ -34,11 +39,11 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             COLUMN_PRODUCT_ID_FK + " INTEGER NOT NULL, " +
             COLUMN_SELLER_ID_FK + " INTEGER NOT NULL, " +
             " FOREIGN KEY (" + COLUMN_PRODUCT_ID_FK + ") REFERENCES " + PRODUCT_TABLE + " (" + COLUMN_PRODUCT_ID + "), " +
-            " FOREIGN KEY (" + COLUMN_SELLER_ID_FK + ") REFERENCES " + SELLER_TABLE + " (" + COLUMN_SELLER_ID + ") " +
+            " FOREIGN KEY (" + COLUMN_SELLER_ID_FK + ") REFERENCES " + SELLER_TABLE + " (" + COLUMN_SELLER_ID + "), " +
+            " UNIQUE (" + COLUMN_PRODUCT_ID_FK + ", " + COLUMN_SELLER_ID_FK + ") " +
             ");";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
-    private ProductPrice productPriceTable;
 
     public ProductPriceHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -56,50 +61,90 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
     }
 
     //ADD a new row to the database
-    public void addProductPrice(ProductPrice productPriceTable) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PRODUCT_ID_FK, productPriceTable.getProduct_id());
-        values.put(COLUMN_NORMAL_PRICE, productPriceTable.getNormal_price());
-        values.put(COLUMN_SPECIAL_PRICE, productPriceTable.getSpecial_price());
-        values.put(COLUMN_SPECIAL_DATE, productPriceTable.getSpecial_date().toString());
-        values.put(COLUMN_SELLER_ID_FK, productPriceTable.getSeller_id());
+    public boolean addProductPrice(ProductPrice productPriceTable) {
+        boolean res = false;
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_PRODUCT_ID_FK, productPriceTable.getProduct_id());
+            values.put(COLUMN_SELLER_ID_FK, productPriceTable.getSeller_id());
+            values.put(COLUMN_NORMAL_PRICE, productPriceTable.getNormal_price());
+            values.put(COLUMN_SPECIAL_PRICE, productPriceTable.getSpecial_price());
+            values.put(COLUMN_SPECIAL_DATE, productPriceTable.getSpecial_date());
+            db.insertOrThrow(TABLE_NAME, null, values);
+            res = true;
+        } catch (SQLiteConstraintException sqlException) {
+            Log.d("sqlException", sqlException.getMessage());
+            res = false;
+        } finally {
+            db.close();
+            return res;
+        }
     }
 
-    // DELETE all products from the DB
+    // UPDATE an existing ProductPrice
+    public boolean updateProductPrice(ProductPrice updated_productprice) {
+        boolean res = false;
+        if (updated_productprice != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_PRODUCT_ID_FK, updated_productprice.getProduct_id());
+                values.put(COLUMN_SELLER_ID_FK, updated_productprice.getSeller_id());
+                values.put(COLUMN_NORMAL_PRICE, updated_productprice.getNormal_price());
+                values.put(COLUMN_SPECIAL_PRICE, updated_productprice.getSpecial_price());
+                values.put(COLUMN_SPECIAL_DATE, updated_productprice.getSpecial_date());
+                db.update(TABLE_NAME, values, COLUMN_PRICELIST_ID + "=" + updated_productprice.getPriceList_id(), null);
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
+        }
+        return res;
+    }
+
+    // DELETE all ProductPrice(s) from the DB
     public void deleteAllProductPrices() {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(SQL_DROP_TABLE);
         onCreate(db);
     }
 
-    //DELETE a product by providing its ID
-    public void deleteProductPricebyID(String productPriceID) {
+    // DELETE a ProductPrice
+    public void deleteProductPrice(ProductPrice productPrice) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_ID + "=\"" + productPriceID + "\";");
+        db.delete(TABLE_NAME, COLUMN_PRICELIST_ID + "=" + productPrice.getPriceList_id(), null);
         db.close();
     }
 
-    //TODO: Print out the table as a String
-    /* public String databaseToString(){
-        String dbString ="";
+    // GET all ProductPrice(s) from the DB
+    public ArrayList<ProductPrice> getProductPrices() {
+        ArrayList<ProductPrice> resProductList = new ArrayList<ProductPrice>();
         SQLiteDatabase db = getWritableDatabase();
+        ProductPrice tempProductPrice;
+        int temp_priceList_id, temp_product_id_fk, temp_seller_id_fk;
+        double temp_normal_price, temp_special_price;
+        String temp_special_date;
 
         //Cursor point to a location in your results
         Cursor c = db.rawQuery(SQL_READ_TABLE, null);
         //Move cursor to the first row
         c.moveToFirst();
 
-        while(!c.isAfterLast()){
-            if(c.getString(c.getColumnIndex("productname")) != null){
-                dbString += c.getString(c.getColumnIndex("productname"));
-                dbString += "\n";
-            }
+        while (!c.isAfterLast()) {
+            temp_priceList_id = c.getInt(c.getColumnIndex(COLUMN_PRICELIST_ID));
+            temp_product_id_fk = c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID_FK));
+            temp_seller_id_fk = c.getInt(c.getColumnIndex(COLUMN_SELLER_ID_FK));
+            temp_normal_price = c.getDouble(c.getColumnIndex(COLUMN_NORMAL_PRICE));
+            temp_special_price = c.getDouble(c.getColumnIndex(COLUMN_SPECIAL_PRICE));
+            temp_special_date = c.getString(c.getColumnIndex(COLUMN_SPECIAL_DATE));
+            tempProductPrice = new ProductPrice(temp_priceList_id, temp_product_id_fk, temp_seller_id_fk, temp_normal_price, temp_special_price, temp_special_date);
+            resProductList.add(tempProductPrice);
             c.moveToNext();
         }
-        db.close();
-        return dbString;
-    } */
+        return resProductList;
+    }
 }

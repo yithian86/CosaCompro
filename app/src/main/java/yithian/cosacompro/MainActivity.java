@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.manage_productprices.ProductPriceListActivity;
 import yithian.cosacompro.manage_products.ProductListActivity;
 import yithian.cosacompro.manage_sellers.SellerListActivity;
 import yithian.cosacompro.settings.SettingsActivity;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mainActivityUI.generateAddProductToList();
-//                Snackbar.make(view, "eeeeh!", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
     }
@@ -63,21 +62,20 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent intent;
 
         // noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.action_manageSellers:
-                intent = new Intent(MainActivity.this, SellerListActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, SellerListActivity.class));
                 break;
             case R.id.action_manageProducts:
-                intent = new Intent(MainActivity.this, ProductListActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, ProductListActivity.class));
+                break;
+            case R.id.action_manageProductPrices:
+                startActivity(new Intent(MainActivity.this, ProductPriceListActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

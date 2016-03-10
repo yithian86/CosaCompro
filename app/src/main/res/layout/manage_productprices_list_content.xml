@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:baselineAligned="true"
+    android:contextClickable="true"
+    android:orientation="vertical"
+    android:columnCount="2"
+    android:rowCount="3"
+    android:background="@drawable/list_item_border">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/productprice_prod_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="product_name"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            android:layout_column="0"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:id="@+id/productprice_seller_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:text="seller"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="14sp"
+            android:layout_column="1" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prezzo: "
+            android:id="@+id/normal_price_label"
+            android:layout_column="0"
+            android:textSize="14sp"
+            android:layout_gravity="right"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:id="@+id/productprice_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="productprice_normal"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="14sp"
+            android:layout_column="1"
+            android:textIsSelectable="false" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prezzo offerta: "
+            android:id="@+id/special_price_label"
+            android:layout_column="0"
+            android:textSize="14sp"
+            android:layout_gravity="right"
+            android:layout_marginRight="6dp" />
+
+        <TextView
+            android:id="@+id/productprice_special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="productprice_special"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="14sp"
+            android:layout_column="1"
+            android:textIsSelectable="false" />
+    </TableRow>
+
+</GridLayout>

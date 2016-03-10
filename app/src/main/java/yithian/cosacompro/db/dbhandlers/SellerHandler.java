@@ -110,4 +110,45 @@ public class SellerHandler extends SQLiteOpenHelper {
         }
         return resSellerList;
     }
+
+    // GET a Seller by providing its ID
+    public Seller getSellerbyID(int sellerID) {
+        Seller resSeller = null;
+        SQLiteDatabase db = getWritableDatabase();
+        int temp_seller_id;
+        String temp_seller_name, temp_address, temp_city;
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_SELLER_ID + "=" + sellerID + ";", null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            temp_seller_id = c.getInt(c.getColumnIndex(COLUMN_SELLER_ID));
+            temp_seller_name = c.getString(c.getColumnIndex(COLUMN_SELLER_NAME));
+            temp_address = c.getString(c.getColumnIndex(COLUMN_ADDRESS));
+            temp_city = c.getString(c.getColumnIndex(COLUMN_CITY));
+            resSeller = new Seller(temp_seller_id, temp_seller_name, temp_address, temp_city);
+            c.moveToNext();
+        }
+        return resSeller;
+    }
+
+    // GET a Seller name by providing its ID
+    public String getSellerNameByID(int sellerID) {
+        String sellerName = "";
+        SQLiteDatabase db = getWritableDatabase();
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_SELLER_ID + "=" + sellerID + ";", null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        // TODO: Check whether the while loop is necessary or troublesome.
+        if ((!c.isAfterLast() && (c.getCount() != 0))) {
+            sellerName = c.getString(c.getColumnIndex(COLUMN_SELLER_NAME));
+        }
+        db.close();
+        return sellerName;
+    }
 }

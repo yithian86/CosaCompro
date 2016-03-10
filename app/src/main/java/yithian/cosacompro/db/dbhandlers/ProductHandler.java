@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 import yithian.cosacompro.db.dbclasses.Product;
-import yithian.cosacompro.db.dbclasses.Seller;
 
 public class ProductHandler extends SQLiteOpenHelper {
 
@@ -126,6 +125,31 @@ public class ProductHandler extends SQLiteOpenHelper {
         return resProductList;
     }
 
+    // GET a Product by providing its ID
+    public Product getProductbyID(int productID) {
+        Product resProduct = null;
+        SQLiteDatabase db = getWritableDatabase();
+        int temp_product_id;
+        String temp_product_name, temp_brand, temp_description, temp_barcode, temp_category;
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_PRODUCT_ID + "=\"" + productID + "\";", null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            temp_product_id = c.getInt(c.getColumnIndex(COLUMN_PRODUCT_ID));
+            temp_product_name = c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME));
+            temp_brand = c.getString(c.getColumnIndex(COLUMN_BRAND));
+            temp_barcode = c.getString(c.getColumnIndex(COLUMN_BARCODE));
+            temp_category = c.getString(c.getColumnIndex(COLUMN_CATEGORY));
+            temp_description = c.getString(c.getColumnIndex(COLUMN_DESCRIPTION));
+            resProduct = new Product(temp_product_id, temp_product_name, temp_brand, temp_category, temp_barcode, temp_description);
+            c.moveToNext();
+        }
+        return resProduct;
+    }
+
     // GET a product ID by providing its name
     public int getProductID(String productName) {
         int productID = -1;
@@ -145,6 +169,24 @@ public class ProductHandler extends SQLiteOpenHelper {
         }
         db.close();
         return productID;
+    }
+
+    // GET a product name by providing its ID
+    public String getProductNameByID(int productID) {
+        String productName = "";
+        SQLiteDatabase db = getWritableDatabase();
+
+        //Cursor point to a location in your results
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_PRODUCT_ID + "=\"" + productID + "\";", null);
+        //Move cursor to the first row
+        c.moveToFirst();
+
+        // TODO: Check whether the while loop is necessary or troublesome.
+        if ((!c.isAfterLast() && (c.getCount() != 0))) {
+            productName = c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME));
+        }
+        db.close();
+        return productName;
     }
 
     // GET all products and store each product_name in an ArrayList

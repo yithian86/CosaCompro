@@ -71,6 +71,27 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="yithian.cosacompro.manage_products.ProductListActivity" />
         </activity>
+
+        <!-- MANAGE PRODUCT PRICES ACTIVITY -->
+        <activity
+            android:name=".manage_productprices.ProductPriceListActivity"
+            android:label="@string/title_productprice_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="yithian.cosacompro.MainActivity" />
+
+        </activity>
+        <activity
+            android:name=".manage_productprices.ProductPriceDetailActivity"
+            android:label="@string/title_productprice_info"
+            android:parentActivityName=".manage_productprices.ProductPriceListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="yithian.cosacompro.manage_productprices.ProductPriceListActivity" />
+        </activity>
     </application>
 
 </manifest>

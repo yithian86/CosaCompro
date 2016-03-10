@@ -40,7 +40,7 @@ public class SellerDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey("open_mode_flag")) {
-            // Load values passed by ProductDetailActivity
+            // Load values passed by ProductPriceDetailActivity
             open_mode_flag = getArguments().getInt("open_mode_flag");
             if (open_mode_flag != 2) {
                 int seller_id = getArguments().getInt("current_seller_id");

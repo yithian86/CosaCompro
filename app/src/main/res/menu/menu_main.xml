@@ -17,4 +17,9 @@
         android:orderInCategory="102"
         android:title="@string/action_manageProducts"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_manageProductPrices"
+        android:orderInCategory="103"
+        android:title="@string/action_manageProductPrices"
+        app:showAsAction="never" />
 </menu>
