@@ -9,10 +9,24 @@
     <string name="title_seller_add">Aggiungi Punto Vendita</string>
     <string name="title_seller_edit">Modifica Punto Vendita</string>
     <string name="title_seller_info">Info Punto Vendita</string>
-    <string name="action_manageSellers">Gestisci Punti Vendita</string>
+    <string name="action_manageSellers">Gestione Punti Vendita</string>
     <string name="title_product_add">Aggiungi Prodotto</string>
     <string name="title_product_edit">Modifica Prodotto</string>
     <string name="title_product_info">Info Prodotto</string>
-    <string name="title_product_list">Gestisci Prodotti</string>
-    <string name="action_manageProducts">Gestisci Prodotti</string>
+    <string name="title_product_list">Gestione Prodotti</string>
+    <string name="action_manageProducts">Gestione Prodotti</string>
+    <string name="title_productprice_add">Aggiungi Prezzatura</string>
+    <string name="title_productprice_edit">Modifica Prezzatura</string>
+    <string name="title_productprice_info">Info Prezzatura</string>
+    <string name="title_productprice_list">Gestione Prezzatura</string>
+    <string name="notification_text">Ma vai a lavurà! Cialtrùn!</string>
+    <string name="action_manageProductPrices">Gestione Prezzature</string>
+    <string name="product_field_barcode">Cod. Barre</string>
+    <string name="product_field_brand">Marca</string>
+    <string name="product_field_category">Categoria</string>
+    <string name="product_field_description">Descrizione</string>
+    <string name="product_field_product_name">Prodotto</string>
+    <string name="seller_field_address">Indirizzo</string>
+    <string name="seller_field_city">Città</string>
+    <string name="seller_field_seller_name">Venditore</string>
 </resources>

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/product_list"
-    android:name="yithian.cosacompro.manageSellers.ProductListFragment"
+    android:name="yithian.cosacompro.manage_products.ProductDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="yithian.cosacompro.manage_sellers.SellerListActivity"
-    tools:listitem="@layout/product_list_content" />
+    tools:listitem="@layout/manage_products_list_content" />

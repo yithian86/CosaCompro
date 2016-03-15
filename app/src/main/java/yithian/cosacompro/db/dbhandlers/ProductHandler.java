@@ -4,8 +4,10 @@ package yithian.cosacompro.db.dbhandlers;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -34,11 +36,11 @@ public class ProductHandler extends SQLiteOpenHelper {
             COLUMN_PRODUCT_NAME + " TEXT NOT NULL, " +
             COLUMN_BRAND + " TEXT NOT NULL, " +
             COLUMN_CATEGORY + " TEXT, " +
-            " FOREIGN KEY (" + COLUMN_CATEGORY + ") REFERENCES " + CATEGORY_TABLE + " (" + COLUMN_CAT_NAME + ") " +
-            ");";
+            " FOREIGN KEY (" + COLUMN_CATEGORY + ") REFERENCES " + CATEGORY_TABLE + " (" + COLUMN_CAT_NAME + "));";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_PRODUCT_NAME + " COLLATE NOCASE, " + COLUMN_BRAND + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
-    private Product productTable;
 
     public ProductHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -47,6 +49,7 @@ public class ProductHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override
@@ -56,32 +59,56 @@ public class ProductHandler extends SQLiteOpenHelper {
     }
 
     // ADD a new row to the database
-    public void addProduct(Product product) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_BARCODE, product.getBarcode());
-        values.put(COLUMN_PRODUCT_NAME, product.getProduct_name());
-        values.put(COLUMN_BRAND, product.getBrand());
-        values.put(COLUMN_DESCRIPTION, product.getDescription());
-        values.put(COLUMN_CATEGORY, product.getCategory());
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_NAME, null, values);
-        db.close();
+    public boolean addProduct(Product product) {
+        boolean res = false;
+        if (product != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_BARCODE, product.getBarcode());
+                values.put(COLUMN_PRODUCT_NAME, product.getProduct_name());
+                values.put(COLUMN_BRAND, product.getBrand());
+                values.put(COLUMN_DESCRIPTION, product.getDescription());
+                values.put(COLUMN_CATEGORY, product.getCategory());
+                db.insertOrThrow(TABLE_NAME, null, values);
+                db.close();
+                res = true;
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
+        }
+        return res;
     }
 
     // UPDATE an existing Product
-    public void updateProduct(Product updated_product) {
+    public boolean updateProduct(Product updated_product) {
+        boolean res = false;
         if (updated_product != null) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_BARCODE, updated_product.getBarcode());
-            values.put(COLUMN_PRODUCT_NAME, updated_product.getProduct_name());
-            values.put(COLUMN_BRAND, updated_product.getBrand());
-            values.put(COLUMN_DESCRIPTION, updated_product.getDescription());
-            values.put(COLUMN_CATEGORY, updated_product.getCategory());
-
             SQLiteDatabase db = getWritableDatabase();
-            db.update(TABLE_NAME, values, COLUMN_PRODUCT_ID + "=" + updated_product.getProduct_id(), null);
-            db.close();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_BARCODE, updated_product.getBarcode());
+                values.put(COLUMN_PRODUCT_NAME, updated_product.getProduct_name());
+                values.put(COLUMN_BRAND, updated_product.getBrand());
+                values.put(COLUMN_DESCRIPTION, updated_product.getDescription());
+                values.put(COLUMN_CATEGORY, updated_product.getCategory());
+
+                db.replaceOrThrow(TABLE_NAME, null, values);
+                db.close();
+                res = true;
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
         }
+        return res;
     }
 
     // DELETE all products from the DB
@@ -91,7 +118,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //DELETE a product
+    // DELETE a product
     public void deleteProduct(Product product) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_PRODUCT_ID + "=" + product.getProduct_id(), null);
@@ -107,7 +134,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         String temp_product_name, temp_brand, temp_description, temp_barcode, temp_category;
 
         //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " ORDER BY " + COLUMN_PRODUCT_NAME, null);
         //Move cursor to the first row
         c.moveToFirst();
 
@@ -195,7 +222,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " ORDER BY " + COLUMN_PRODUCT_NAME, null);
         //Move cursor to the first row
         c.moveToFirst();
 

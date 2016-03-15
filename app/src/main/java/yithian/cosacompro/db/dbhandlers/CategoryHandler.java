@@ -18,8 +18,9 @@ public class CategoryHandler extends SQLiteOpenHelper {
     private static final String COLUMN_CAT_NAME = "cat_name";
     // SQL strings
     private static final String SQL_CREATE_TABLE = "CREATE TABLE '" + TABLE_NAME + "' ( " +
-            COLUMN_CAT_NAME + " TEXT PRIMARY KEY NOT NULL " +
-            ");";
+            COLUMN_CAT_NAME + " TEXT PRIMARY KEY NOT NULL);";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_CAT_NAME + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
 
@@ -30,6 +31,7 @@ public class CategoryHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override

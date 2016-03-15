@@ -17,7 +17,7 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "cosacompro.db";
-    private static final String TABLE_NAME = "priceList";
+    private static final String TABLE_NAME = "product_price";
     // Table fields
     private static final String COLUMN_PRICELIST_ID = "priceList_id";
     private static final String COLUMN_NORMAL_PRICE = "normal_price";
@@ -39,9 +39,9 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             COLUMN_PRODUCT_ID_FK + " INTEGER NOT NULL, " +
             COLUMN_SELLER_ID_FK + " INTEGER NOT NULL, " +
             " FOREIGN KEY (" + COLUMN_PRODUCT_ID_FK + ") REFERENCES " + PRODUCT_TABLE + " (" + COLUMN_PRODUCT_ID + "), " +
-            " FOREIGN KEY (" + COLUMN_SELLER_ID_FK + ") REFERENCES " + SELLER_TABLE + " (" + COLUMN_SELLER_ID + "), " +
-            " UNIQUE (" + COLUMN_PRODUCT_ID_FK + ", " + COLUMN_SELLER_ID_FK + ") " +
-            ");";
+            " FOREIGN KEY (" + COLUMN_SELLER_ID_FK + ") REFERENCES " + SELLER_TABLE + " (" + COLUMN_SELLER_ID + "));";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_PRODUCT_ID_FK + " COLLATE NOCASE, " + COLUMN_SELLER_ID_FK + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
 
@@ -52,6 +52,7 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override
@@ -63,23 +64,26 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
     //ADD a new row to the database
     public boolean addProductPrice(ProductPrice productPriceTable) {
         boolean res = false;
-        SQLiteDatabase db = getWritableDatabase();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_PRODUCT_ID_FK, productPriceTable.getProduct_id());
-            values.put(COLUMN_SELLER_ID_FK, productPriceTable.getSeller_id());
-            values.put(COLUMN_NORMAL_PRICE, productPriceTable.getNormal_price());
-            values.put(COLUMN_SPECIAL_PRICE, productPriceTable.getSpecial_price());
-            values.put(COLUMN_SPECIAL_DATE, productPriceTable.getSpecial_date());
-            db.insertOrThrow(TABLE_NAME, null, values);
-            res = true;
-        } catch (SQLiteConstraintException sqlException) {
-            Log.d("sqlException", sqlException.getMessage());
-            res = false;
-        } finally {
-            db.close();
-            return res;
+        if (productPriceTable != null) {
+            SQLiteDatabase db = getWritableDatabase();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_PRODUCT_ID_FK, productPriceTable.getProduct_id());
+                values.put(COLUMN_SELLER_ID_FK, productPriceTable.getSeller_id());
+                values.put(COLUMN_NORMAL_PRICE, productPriceTable.getNormal_price());
+                values.put(COLUMN_SPECIAL_PRICE, productPriceTable.getSpecial_price());
+                values.put(COLUMN_SPECIAL_DATE, productPriceTable.getSpecial_date());
+                db.insertOrThrow(TABLE_NAME, null, values);
+                res = true;
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
         }
+        return res;
     }
 
     // UPDATE an existing ProductPrice
@@ -94,7 +98,8 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
                 values.put(COLUMN_NORMAL_PRICE, updated_productprice.getNormal_price());
                 values.put(COLUMN_SPECIAL_PRICE, updated_productprice.getSpecial_price());
                 values.put(COLUMN_SPECIAL_DATE, updated_productprice.getSpecial_date());
-                db.update(TABLE_NAME, values, COLUMN_PRICELIST_ID + "=" + updated_productprice.getPriceList_id(), null);
+                db.replaceOrThrow(TABLE_NAME, null, values);
+                res = true;
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
@@ -130,7 +135,7 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
         String temp_special_date;
 
         //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " ORDER BY " + COLUMN_PRODUCT_ID_FK, null);
         //Move cursor to the first row
         c.moveToFirst();
 

@@ -1,5 +1,7 @@
 package yithian.cosacompro.manage_productprices;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -37,6 +39,8 @@ public class ProductPriceDetailFragment extends Fragment {
     private TextView normal_price_input;
     private TextView special_price_input;
     private TextView special_data_input;
+    private Button product_info_btn;
+    private Button seller_info_btn;
     private Button applyProductPriceChanges_button;
 
     public ProductPriceDetailFragment() {
@@ -75,6 +79,8 @@ public class ProductPriceDetailFragment extends Fragment {
         normal_price_input = (TextView) rootView.findViewById(R.id.normal_price_input);
         special_price_input = (TextView) rootView.findViewById(R.id.special_price_input);
         special_data_input = (TextView) rootView.findViewById(R.id.special_data_input);
+        product_info_btn = (Button) rootView.findViewById(R.id.product_info_btn);
+        seller_info_btn = (Button) rootView.findViewById(R.id.seller_info_btn);
         applyProductPriceChanges_button = (Button) rootView.findViewById(R.id.applyProductPriceChanges_button);
 
         // Configure the prod_name_input Spinner
@@ -114,6 +120,42 @@ public class ProductPriceDetailFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        // Configure the product_info_btn Button
+        product_info_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cur_product = product_arrayList.get(prod_name_input.getSelectedItemPosition()).toString(getContext());
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle(R.string.title_product_info);
+                alertDialog.setMessage(cur_product);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+
+        // Configure the seller_info_btn Button
+        seller_info_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cur_seller = seller_arrayList.get(seller_input.getSelectedItemPosition()).toString(getContext());
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle(R.string.title_seller_info);
+                alertDialog.setMessage(cur_seller);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
         });
 
@@ -170,7 +212,7 @@ public class ProductPriceDetailFragment extends Fragment {
             // Load values in UI
             loadProductPriceValues();
             // Set title on top
-            this.getActivity().setTitle(R.string.title_product_info);
+            this.getActivity().setTitle(R.string.title_productprice_info);
             // Disable UI
             triggerUI(false);
         }
@@ -181,30 +223,40 @@ public class ProductPriceDetailFragment extends Fragment {
             // Load values in UI
             loadProductPriceValues();
             // Set title on top
-            this.getActivity().setTitle(R.string.title_product_edit);
+            this.getActivity().setTitle(R.string.title_productprice_edit);
             // Enable UI
             triggerUI(true);
+            prod_name_input.setEnabled(false);
+            seller_input.setEnabled(false);
+            prod_name_input.setFocusable(false);
+            seller_input.setFocusable(false);
 
             applyProductPriceChanges_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String temp;
-                    // Update current Product
+                    // Update current ProductPrice
                     current_productprice.setProduct_id(product_arrayList.get(prod_name_input.getSelectedItemPosition()).getProduct_id());
                     current_productprice.setSeller_id(seller_arrayList.get(seller_input.getSelectedItemPosition()).getSeller_id());
 
                     temp = normal_price_input.getText().toString();
                     if (!temp.equals(""))
                         current_productprice.setNormal_price(Double.valueOf(temp));
+                    else
+                        current_productprice.setNormal_price(0.0);
 
                     temp = special_price_input.getText().toString();
-                    if (!temp.equals(""))
+                    if ((!temp.equals("")) && !temp.equals(0.0)) {
                         current_productprice.setSpecial_price(Double.valueOf(temp));
-                    current_productprice.setSpecial_date(special_data_input.getText().toString());
+                        current_productprice.setSpecial_date(special_data_input.getText().toString());
+                    } else {
+                        current_productprice.setSpecial_price(0.0);
+                        current_productprice.setSpecial_date("");
+                    }
                     // Update the DB
-                    boolean addResult = dbPopulator.getProductPriceHandler().updateProductPrice(current_productprice);
-                    if (!addResult) {
-                        Snackbar.make(getView(), "ooops! Hai provato ad inserire una prezzatura già esistente!", Snackbar.LENGTH_LONG)
+                    boolean updateResult = dbPopulator.getProductPriceHandler().updateProductPrice(current_productprice);
+                    if (!updateResult) {
+                        Snackbar.make(getView(), R.string.productprice_duplicate_error, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } else {
                         // Go back to the previous screen
@@ -217,7 +269,7 @@ public class ProductPriceDetailFragment extends Fragment {
 
     private void openAddMode() {
         // Set title on top
-        this.getActivity().setTitle(R.string.title_product_add);
+        this.getActivity().setTitle(R.string.title_productprice_add);
         // Enable UI
         triggerUI(true);
 
@@ -229,21 +281,23 @@ public class ProductPriceDetailFragment extends Fragment {
                 int product_id = product_arrayList.get(prod_name_input.getSelectedItemPosition()).getProduct_id();
                 int seller_id = seller_arrayList.get(seller_input.getSelectedItemPosition()).getSeller_id();
 
-                double norm_price = 0;
+                double norm_price = 0.0;
                 temp = normal_price_input.getText().toString();
                 if (!temp.equals(""))
                     norm_price = Double.valueOf(temp);
 
-                double spec_price = 0;
+                double spec_price = 0.0;
+                String spec_date = "";
                 temp = special_price_input.getText().toString();
-                if (!temp.equals(""))
+                if (!temp.equals("") && !temp.equals(0.0)) {
                     spec_price = Double.valueOf(temp);
-                String spec_date = special_data_input.getText().toString();
+                    spec_date = special_data_input.getText().toString();
+                }
                 current_productprice = new ProductPrice(product_id, seller_id, norm_price, spec_price, spec_date);
                 // Update the DB
                 boolean addResult = dbPopulator.getProductPriceHandler().addProductPrice(current_productprice);
                 if (!addResult) {
-                    Snackbar.make(getView(), "ooops! Hai provato ad inserire una prezzatura già esistente!", Snackbar.LENGTH_LONG)
+                    Snackbar.make(getView(), R.string.productprice_duplicate_error, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
                     // Go back to the previous screen

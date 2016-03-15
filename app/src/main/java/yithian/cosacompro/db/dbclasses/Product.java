@@ -1,5 +1,9 @@
 package yithian.cosacompro.db.dbclasses;
 
+import android.content.Context;
+
+import yithian.cosacompro.R;
+
 public class Product {
     private int product_id;
     private String barcode;
@@ -72,5 +76,14 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    // Custom "toString" method
+    public String toString(Context context) {
+        return context.getResources().getString(R.string.product_field_product_name) + ": " + product_name +
+                "\n" + context.getResources().getString(R.string.product_field_brand) + ": " + brand +
+                "\n" + context.getResources().getString(R.string.product_field_category) + ": " + category +
+                "\n" + context.getResources().getString(R.string.product_field_barcode) + ": " + barcode +
+                "\n" + context.getResources().getString(R.string.product_field_description) + ": " + description;
     }
 }

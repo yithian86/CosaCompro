@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="yithian.cosacompro">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -81,16 +83,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="yithian.cosacompro.MainActivity" />
-
         </activity>
         <activity
             android:name=".manage_productprices.ProductPriceDetailActivity"
             android:label="@string/title_productprice_info"
             android:parentActivityName=".manage_productprices.ProductPriceListActivity"
             android:theme="@style/AppTheme.NoActionBar">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="yithian.cosacompro.manage_productprices.ProductPriceListActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="yithian.cosacompro.manage_productprices.ProductPriceListActivity" />
         </activity>
     </application>
 

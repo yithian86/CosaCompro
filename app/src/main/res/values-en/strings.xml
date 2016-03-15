@@ -15,4 +15,18 @@
     <string name="title_product_info">Product Info</string>
     <string name="title_product_list">Manage Product</string>
     <string name="action_manageProducts">Manage Products</string>
+    <string name="title_productprice_add">Add Product Price</string>
+    <string name="title_productprice_edit">Edit Product Price</string>
+    <string name="title_productprice_info">Product Price Info</string>
+    <string name="title_productprice_list">Manage Product Price</string>
+    <string name="notification_text">Ma vai a lavurà! Cialtrùn!</string>
+    <string name="action_manageProductPrices">Manage Product Prices</string>
+    <string name="product_field_barcode">Barcode</string>
+    <string name="product_field_brand">Brand</string>
+    <string name="product_field_category">Category</string>
+    <string name="product_field_description">Description</string>
+    <string name="product_field_product_name">Product</string>
+    <string name="seller_field_address">Address</string>
+    <string name="seller_field_city">City</string>
+    <string name="seller_field_seller_name">Seller</string>
 </resources>

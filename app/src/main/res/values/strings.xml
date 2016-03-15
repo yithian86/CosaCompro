@@ -15,6 +15,7 @@
     <string name="title_seller_info">Seller Info</string>
     <string name="title_seller_add">Add Seller</string>
     <string name="title_seller_edit">Edit Seller</string>
+    <string name="seller_duplicate_error">ooops! You tried to add a seller that already exists!</string>
 
     <!-- ManageProducts -->
     <string name="action_manageProducts">Manage Products</string>
@@ -22,6 +23,7 @@
     <string name="title_product_info">Product Info</string>
     <string name="title_product_add">Add Product</string>
     <string name="title_product_edit">Edit Product</string>
+    <string name="product_duplicate_error">ooops! You tried to add a product that already exists!</string>
 
     <!-- ManageProductPrices -->
     <string name="action_manageProductPrices">Manage Product Prices</string>
@@ -29,6 +31,19 @@
     <string name="title_productprice_info">Product Price Info</string>
     <string name="title_productprice_add">Add Product Price</string>
     <string name="title_productprice_edit">Edit Product Price</string>
+    <string name="productprice_duplicate_error">ooops! You tried to add a product price that already exists!</string>
+
+    <!-- Seller fields-->
+    <string name="seller_field_seller_name">Seller</string>
+    <string name="seller_field_address">Address</string>
+    <string name="seller_field_city">City</string>
+
+    <!-- Product fields -->
+    <string name="product_field_product_name">Product</string>
+    <string name="product_field_brand">Brand</string>
+    <string name="product_field_category">Category</string>
+    <string name="product_field_barcode">Barcode:</string>
+    <string name="product_field_description">Description</string>
 
     <!-- Nothing -->
     <string name="notification_text">Ma vai a lavurà! Cialtrùn!</string>

@@ -1,5 +1,10 @@
 package yithian.cosacompro.db.dbclasses;
 
+import android.content.ContentValues;
+import android.content.Context;
+
+import yithian.cosacompro.R;
+
 public class Seller {
     private int seller_id;
     private String seller_name;
@@ -50,5 +55,12 @@ public class Seller {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    // Custom "toString" method
+    public String toString(Context context) {
+        return context.getResources().getString(R.string.seller_field_seller_name) + ": " + seller_name +
+                "\n" + context.getResources().getString(R.string.seller_field_address) + ": " + address +
+                "\n" + context.getResources().getString(R.string.seller_field_city) + ": " + city;
     }
 }

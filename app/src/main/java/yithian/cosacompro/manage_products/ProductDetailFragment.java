@@ -2,6 +2,7 @@ package yithian.cosacompro.manage_products;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import yithian.cosacompro.db.dbclasses.Product;
 public class ProductDetailFragment extends Fragment {
     private Product current_product;
     private View rootView;
+    private DBPopulator dbPopulator;
     private ArrayList<String> cat_arraylist;
     private int open_mode_flag;
     // UI stuff
@@ -53,7 +55,8 @@ public class ProductDetailFragment extends Fragment {
             }
 
             // prod_cat_input Spinner stuff
-            cat_arraylist = new DBPopulator(this.getContext(), null, null, 1).getCategoryHandler().categoryToArrayList();
+            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
+            cat_arraylist = dbPopulator.getCategoryHandler().categoryToArrayList();
         }
     }
 
@@ -147,6 +150,8 @@ public class ProductDetailFragment extends Fragment {
             this.getActivity().setTitle(R.string.title_product_edit);
             // Enable UI
             triggerUI(true);
+            prod_name_input.setEnabled(false);
+            prod_name_input.setFocusable(false);
 
             applyProductChanges_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -158,9 +163,14 @@ public class ProductDetailFragment extends Fragment {
                     current_product.setBarcode(prod_barcode_input.getText().toString());
                     current_product.setDescription(prod_desc_input.getText().toString());
                     // Update the DB
-                    new DBPopulator(v.getContext(), null, null, 1).getProductHandler().updateProduct(current_product);
-                    // Go back to the previous screen
-                    NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), ProductListActivity.class));
+                    boolean updateResult = dbPopulator.getProductHandler().updateProduct(current_product);
+                    if (!updateResult) {
+                        Snackbar.make(getView(), R.string.product_duplicate_error, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } else {
+                        // Go back to the previous screen
+                        NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), ProductListActivity.class));
+                    }
                 }
             });
         }
@@ -183,9 +193,14 @@ public class ProductDetailFragment extends Fragment {
                 String prod_desc = prod_desc_input.getText().toString();
                 current_product = new Product(prod_name, prod_brand, prod_cat, prod_barcode, prod_desc);
                 // Update the DB
-                new DBPopulator(v.getContext(), null, null, 1).getProductHandler().addProduct(current_product);
-                // Go back to the previous screen
-                NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), ProductListActivity.class));
+                boolean addResult = dbPopulator.getProductHandler().addProduct(current_product);
+                if (!addResult) {
+                    Snackbar.make(getView(), R.string.product_duplicate_error, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    // Go back to the previous screen
+                    NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), ProductListActivity.class));
+                }
             }
         });
     }

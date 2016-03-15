@@ -22,8 +22,9 @@ public class ListHandler extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE = "CREATE TABLE '" + TABLE_NAME + "' ( " +
             COLUMN_LIST_NAME + " TEXT PRIMARY KEY NOT NULL, " +
             COLUMN_LIST_START + " TEXT, " +
-            COLUMN_LIST_END + " TEXT " +
-            ");";
+            COLUMN_LIST_END + " TEXT );";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_LIST_NAME + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
 
@@ -34,6 +35,7 @@ public class ListHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override

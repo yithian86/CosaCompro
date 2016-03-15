@@ -2,6 +2,7 @@ package yithian.cosacompro.manage_sellers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import yithian.cosacompro.db.dbclasses.Seller;
 public class SellerDetailFragment extends Fragment {
     private Seller current_seller;
     private View rootView;
+    private DBPopulator dbPopulator;
     private int open_mode_flag;
     // UI stuff
     private TextView seller_name_input;
@@ -49,6 +51,7 @@ public class SellerDetailFragment extends Fragment {
                 String seller_city = getArguments().getString("current_seller_city");
                 current_seller = new Seller(seller_id, seller_name, seller_address, seller_city);
             }
+            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
         }
     }
 
@@ -91,14 +94,14 @@ public class SellerDetailFragment extends Fragment {
         seller_name_input.setEnabled(trigger);
         seller_address_input.setEnabled(trigger);
         seller_city_input.setEnabled(trigger);
-//        GPSLat_input.setEnabled(trigger);
-//        GPSLon_input.setEnabled(trigger);
+//TODO:        GPSLat_input.setEnabled(trigger);
+//TODO:        GPSLon_input.setEnabled(trigger);
         // Set focus
         seller_name_input.setFocusable(trigger);
         seller_address_input.setFocusable(trigger);
         seller_city_input.setFocusable(trigger);
-//        GPSLat_input.setFocusable(trigger);
-//        GPSLon_input.setFocusable(trigger);
+//TODO:        GPSLat_input.setFocusable(trigger);
+//TODO:        GPSLon_input.setFocusable(trigger);
         // Trigger the input button
         if (trigger)
             applySellerChanges_button.setVisibility(View.VISIBLE);
@@ -124,6 +127,8 @@ public class SellerDetailFragment extends Fragment {
             this.getActivity().setTitle(R.string.title_seller_edit);
             // Enable UI
             triggerUI(true);
+            seller_name_input.setEnabled(false);
+            seller_name_input.setFocusable(false);
 
             applySellerChanges_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,9 +137,15 @@ public class SellerDetailFragment extends Fragment {
                     current_seller.setSeller_name(seller_name_input.getText().toString());
                     current_seller.setAddress(seller_address_input.getText().toString());
                     current_seller.setCity(seller_city_input.getText().toString());
-                    new DBPopulator(v.getContext(), null, null, 1).getSellerHandler().updateSeller(current_seller);
-                    // Go back to the previous screen
-                    NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+                    // Update the DB
+                    boolean updateResult = dbPopulator.getSellerHandler().updateSeller(current_seller);
+                    if (!updateResult) {
+                        Snackbar.make(getView(), R.string.seller_duplicate_error, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } else {
+                        // Go back to the previous screen
+                        NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+                    }
                 }
             });
         }
@@ -154,9 +165,15 @@ public class SellerDetailFragment extends Fragment {
                 String seller_address = seller_address_input.getText().toString();
                 String seller_city = seller_city_input.getText().toString();
                 current_seller = new Seller(seller_name, seller_address, seller_city);
-                new DBPopulator(v.getContext(), null, null, 1).getSellerHandler().addSeller(current_seller);
-                // Go back to the previous screen
-                NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+                // Update the DB
+                boolean updateResult = dbPopulator.getSellerHandler().addSeller(current_seller);
+                if (!updateResult) {
+                    Snackbar.make(getView(), R.string.seller_duplicate_error, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    // Go back to the previous screen
+                    NavUtils.navigateUpTo(getActivity(), new Intent(v.getContext(), SellerListActivity.class));
+                }
             }
         });
     }

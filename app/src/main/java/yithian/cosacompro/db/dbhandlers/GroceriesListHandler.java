@@ -27,7 +27,6 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
     private static final String COLUMN_LIST_NAME = "list_name";
     private static final String PRODUCT_TABLE = "product";
     private static final String COLUMN_PRODUCT_ID = "product_id";
-    private static final String COLUMN_PRODUCT_NAME = "product_name";
     // SQL strings
     private static final String SQL_CREATE_TABLE = "CREATE TABLE '" + TABLE_NAME + "' ( " +
             COLUMN_GLIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT (0), " +
@@ -35,11 +34,11 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
             COLUMN_PRODUCT_ID_FK + " INTEGER NOT NULL, " +
             COLUMN_LIST_NAME_FK + " TEXT NOT NULL, " +
             " FOREIGN KEY (" + COLUMN_PRODUCT_ID_FK + ") REFERENCES " + LIST_TABLE + " (" + COLUMN_LIST_NAME + "), " +
-            " FOREIGN KEY (" + COLUMN_LIST_NAME_FK + ") REFERENCES " + PRODUCT_TABLE + " (" + COLUMN_PRODUCT_ID + ")" +
-            ");";
+            " FOREIGN KEY (" + COLUMN_LIST_NAME_FK + ") REFERENCES " + PRODUCT_TABLE + " (" + COLUMN_PRODUCT_ID + "));";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_PRODUCT_ID_FK + " COLLATE NOCASE, " + COLUMN_LIST_NAME_FK + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
-    private GroceriesList groceriesListTable;
 
     public GroceriesListHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -48,6 +47,7 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override

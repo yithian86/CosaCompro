@@ -3,8 +3,10 @@ package yithian.cosacompro.db.dbhandlers;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -24,8 +26,9 @@ public class SellerHandler extends SQLiteOpenHelper {
             COLUMN_SELLER_ID + " INTEGER PRIMARY KEY NOT NULL DEFAULT (0), " +
             COLUMN_SELLER_NAME + " TEXT NOT NULL, " +
             COLUMN_ADDRESS + " TEXT, " +
-            COLUMN_CITY + " TEXT " +
-            ");";
+            COLUMN_CITY + " TEXT );";
+    private static final String SQL_UNIQUE_CONSTRAINT = "CREATE UNIQUE INDEX " + TABLE_NAME + "unique_constr ON " +
+            TABLE_NAME + " (" + COLUMN_SELLER_NAME + " COLLATE NOCASE, " + COLUMN_ADDRESS + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
 
@@ -36,6 +39,7 @@ public class SellerHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_UNIQUE_CONSTRAINT);
     }
 
     @Override
@@ -45,31 +49,51 @@ public class SellerHandler extends SQLiteOpenHelper {
     }
 
     // ADD a new Seller to the database
-    public void addSeller(Seller new_seller) {
+    public boolean addSeller(Seller new_seller) {
+        boolean res = false;
         if (new_seller != null) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_SELLER_NAME, new_seller.getSeller_name());
-            values.put(COLUMN_ADDRESS, new_seller.getAddress());
-            values.put(COLUMN_CITY, new_seller.getCity());
-
             SQLiteDatabase db = getWritableDatabase();
-            db.insert(TABLE_NAME, null, values);
-            db.close();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_SELLER_NAME, new_seller.getSeller_name());
+                values.put(COLUMN_ADDRESS, new_seller.getAddress());
+                values.put(COLUMN_CITY, new_seller.getCity());
+                db.insertOrThrow(TABLE_NAME, null, values);
+                db.close();
+                res = true;
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
         }
+        return res;
     }
 
     // UPDATE an existing Seller
-    public void updateSeller(Seller updated_seller) {
+    public boolean updateSeller(Seller updated_seller) {
+        boolean res = false;
         if (updated_seller != null) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_SELLER_NAME, updated_seller.getSeller_name());
-            values.put(COLUMN_ADDRESS, updated_seller.getAddress());
-            values.put(COLUMN_CITY, updated_seller.getCity());
-
             SQLiteDatabase db = getWritableDatabase();
-            db.update(TABLE_NAME, values, COLUMN_SELLER_ID + "=" + updated_seller.getSeller_id(), null);
-            db.close();
+            try {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_SELLER_NAME, updated_seller.getSeller_name());
+                values.put(COLUMN_ADDRESS, updated_seller.getAddress());
+                values.put(COLUMN_CITY, updated_seller.getCity());
+                db.replaceOrThrow(TABLE_NAME, null, values);
+                db.close();
+                res = true;
+            } catch (SQLiteConstraintException sqlException) {
+                Log.d("sqlException", sqlException.getMessage());
+                res = false;
+            } finally {
+                db.close();
+                return res;
+            }
         }
+        return res;
     }
 
     // DELETE a seller from the table
@@ -95,7 +119,7 @@ public class SellerHandler extends SQLiteOpenHelper {
         String temp_seller_name, temp_address, temp_city;
 
         //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE, null);
+        Cursor c = db.rawQuery(SQL_READ_TABLE + " ORDER BY " + COLUMN_SELLER_NAME + " COLLATE NOCASE", null);
         //Move cursor to the first row
         c.moveToFirst();
 
@@ -109,29 +133,6 @@ public class SellerHandler extends SQLiteOpenHelper {
             c.moveToNext();
         }
         return resSellerList;
-    }
-
-    // GET a Seller by providing its ID
-    public Seller getSellerbyID(int sellerID) {
-        Seller resSeller = null;
-        SQLiteDatabase db = getWritableDatabase();
-        int temp_seller_id;
-        String temp_seller_name, temp_address, temp_city;
-
-        //Cursor point to a location in your results
-        Cursor c = db.rawQuery(SQL_READ_TABLE + " WHERE " + COLUMN_SELLER_ID + "=" + sellerID + ";", null);
-        //Move cursor to the first row
-        c.moveToFirst();
-
-        while (!c.isAfterLast()) {
-            temp_seller_id = c.getInt(c.getColumnIndex(COLUMN_SELLER_ID));
-            temp_seller_name = c.getString(c.getColumnIndex(COLUMN_SELLER_NAME));
-            temp_address = c.getString(c.getColumnIndex(COLUMN_ADDRESS));
-            temp_city = c.getString(c.getColumnIndex(COLUMN_CITY));
-            resSeller = new Seller(temp_seller_id, temp_seller_name, temp_address, temp_city);
-            c.moveToNext();
-        }
-        return resSeller;
     }
 
     // GET a Seller name by providing its ID
