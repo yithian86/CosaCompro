@@ -86,7 +86,8 @@ public class ProductPriceDetailFragment extends Fragment {
         // Configure the prod_name_input Spinner
         prodNames_arrayList = new ArrayList<>();
         for (int i = 0; i < product_arrayList.size(); i++) {
-            prodNames_arrayList.add(product_arrayList.get(i).getProduct_name());
+            prodNames_arrayList.add(product_arrayList.get(i).getProduct_name() + " (" +
+                    product_arrayList.get(i).getBrand() + ")");
         }
         ArrayAdapter<String> prod_name_inputadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, prodNames_arrayList);
         prod_name_inputadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,7 +107,9 @@ public class ProductPriceDetailFragment extends Fragment {
         // Configure the seller_input Spinner
         selNames_arrayList = new ArrayList<>();
         for (int i = 0; i < seller_arrayList.size(); i++) {
-            selNames_arrayList.add(seller_arrayList.get(i).getSeller_name());
+            selNames_arrayList.add(seller_arrayList.get(i).getSeller_name() + " (" +
+                    seller_arrayList.get(i).getAddress() + ", " +
+                    seller_arrayList.get(i).getCity() + ")");
         }
         ArrayAdapter<String> seller_inputadapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, selNames_arrayList);
         seller_inputadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

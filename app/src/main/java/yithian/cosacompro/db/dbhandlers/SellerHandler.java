@@ -40,6 +40,7 @@ public class SellerHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
         db.execSQL(SQL_UNIQUE_CONSTRAINT);
+        db.close();
     }
 
     @Override
