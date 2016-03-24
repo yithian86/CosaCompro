@@ -23,9 +23,26 @@ public class CategoryHandler extends SQLiteOpenHelper {
             TABLE_NAME + " (" + COLUMN_CAT_NAME + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
+    private static CategoryHandler mInstance;
 
-    public CategoryHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    /**
+     * Use the application context, which will ensure that you
+     * don't accidentally leak an Activity's context.
+     * See this article for more information: http://bit.ly/6LRzfx
+     */
+    public static CategoryHandler getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new CategoryHandler(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+    /**
+     * Constructor should be private to prevent direct instantiation.
+     * make call to static factory method "getInstance()" instead.
+     */
+    private CategoryHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

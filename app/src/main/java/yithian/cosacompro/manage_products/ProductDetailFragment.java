@@ -17,13 +17,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.Product;
 
 public class ProductDetailFragment extends Fragment {
     private Product current_product;
     private View rootView;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private ArrayList<String> cat_arraylist;
     private int open_mode_flag;
     // UI stuff
@@ -55,8 +55,8 @@ public class ProductDetailFragment extends Fragment {
             }
 
             // prod_cat_input Spinner stuff
-            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
-            cat_arraylist = dbPopulator.getCategoryHandler().categoryToArrayList();
+            dbHandler = DBHandler.getInstance(this.getContext());
+            cat_arraylist = dbHandler.getCategoryHandler().categoryToArrayList();
         }
     }
 
@@ -163,7 +163,7 @@ public class ProductDetailFragment extends Fragment {
                     current_product.setBarcode(prod_barcode_input.getText().toString());
                     current_product.setDescription(prod_desc_input.getText().toString());
                     // Update the DB
-                    boolean updateResult = dbPopulator.getProductHandler().updateProduct(current_product);
+                    boolean updateResult = dbHandler.getProductHandler().updateProduct(current_product);
                     if (!updateResult) {
                         Snackbar.make(getView(), R.string.product_duplicate_error, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -193,7 +193,7 @@ public class ProductDetailFragment extends Fragment {
                 String prod_desc = prod_desc_input.getText().toString();
                 current_product = new Product(prod_name, prod_brand, prod_cat, prod_barcode, prod_desc);
                 // Update the DB
-                boolean addResult = dbPopulator.getProductHandler().addProduct(current_product);
+                boolean addResult = dbHandler.getProductHandler().addProduct(current_product);
                 if (!addResult) {
                     Snackbar.make(getView(), R.string.product_duplicate_error, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

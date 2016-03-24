@@ -3,7 +3,6 @@ package yithian.cosacompro.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import yithian.cosacompro.db.dbclasses.GList;
 import yithian.cosacompro.db.dbhandlers.GListHandler;
@@ -40,7 +39,7 @@ public class SettingsManager {
     }
 
     public GList getDefaultList() {
-        GListHandler gListHandler = new GListHandler(activity, null, null, 1);
+        GListHandler gListHandler = GListHandler.getInstance(activity.getApplicationContext());
         defaultGList = gListHandler.getGListFromID(getDefaultListID());
         return defaultGList;
     }

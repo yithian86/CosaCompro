@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.manage_glists.GListListActivity;
 import yithian.cosacompro.manage_productprices.ProductPriceListActivity;
 import yithian.cosacompro.manage_products.ProductListActivity;
@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
         // Settings and preferences
         SettingsManager settingsManager = new SettingsManager(this);
         // Initialize and populate Database
-        DBPopulator dbPopulator = new DBPopulator(this, null, null, 1);
-        dbPopulator.populateDB();
+        DBHandler dbHandler = DBHandler.getInstance(this);
+        dbHandler.populateDB();
         // Generate UI
-        mainActivityUI = new MainActivityUI(this, settingsManager, dbPopulator);
+        mainActivityUI = new MainActivityUI(this, settingsManager, dbHandler);
         mainActivityUI.generateDefaultList();
 
         // Bottom-right button

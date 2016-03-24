@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GList;
 
 /**
@@ -24,7 +24,7 @@ import yithian.cosacompro.db.dbclasses.GList;
 public class GListDetailFragment extends Fragment {
     private GList current_gList;
     private View rootView;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private int open_mode_flag;
     // UI stuff
     private TextView glist_name_input;
@@ -49,7 +49,7 @@ public class GListDetailFragment extends Fragment {
                 String glist_end = getArguments().getString("current_glist_end");
                 current_gList = new GList(glist_id, glist_name, glist_start, glist_end);
             }
-            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
+            dbHandler = DBHandler.getInstance(this.getContext());
         }
     }
 
@@ -128,7 +128,7 @@ public class GListDetailFragment extends Fragment {
                     current_gList.setGList_start(glist_start_input.getText().toString());
                     current_gList.setGList_end(glist_end_input.getText().toString());
                     // Update the DB
-                    boolean updateResult = dbPopulator.getGListHandler().updateGList(current_gList);
+                    boolean updateResult = dbHandler.getGListHandler().updateGList(current_gList);
                     if (!updateResult) {
                         Snackbar.make(getView(), R.string.glist_duplicate_error, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -158,7 +158,7 @@ public class GListDetailFragment extends Fragment {
 //                current_gList = new GList(glist_name, glist_start, glist_end);
                 current_gList = new GList(glist_name, "", "");
                 // Update the DB
-                boolean updateResult = dbPopulator.getGListHandler().addGList(current_gList);
+                boolean updateResult = dbHandler.getGListHandler().addGList(current_gList);
                 if (!updateResult) {
                     Snackbar.make(getView(), R.string.glist_duplicate_error, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

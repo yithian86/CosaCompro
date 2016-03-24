@@ -22,7 +22,7 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GList;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
 import yithian.cosacompro.settings.SettingsManager;
@@ -30,7 +30,7 @@ import yithian.cosacompro.settings.SettingsManager;
 public class MainActivityUI {
     private GList defaultGList;
     private SettingsManager settingsManager;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private Activity main_activity;
     private ListView groceriesListView;
     private TextView listNameView;
@@ -45,7 +45,7 @@ public class MainActivityUI {
     public MainActivityUI() {
     }
 
-    public MainActivityUI(Activity main_activity, SettingsManager settingsManager, DBPopulator dbPopulator) {
+    public MainActivityUI(Activity main_activity, SettingsManager settingsManager, DBHandler dbHandler) {
         this.main_activity = main_activity;
         inputMethodManager = (InputMethodManager) main_activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -53,7 +53,7 @@ public class MainActivityUI {
         this.settingsManager = settingsManager;
 
         // DBPopulator
-        this.dbPopulator = dbPopulator;
+        this.dbHandler = dbHandler;
 
         // Default List UI stuff
         listNameView = (TextView) main_activity.findViewById(R.id.listNameView);
@@ -83,9 +83,9 @@ public class MainActivityUI {
             Log.e("defaultGList", "defaultGList is null");
         } else {
             // 2. Get all the Groceries by providing the GList ID
-            ArrayList<GroceriesList> array_GroceriesList = dbPopulator.getGroceriesListHandler().getGroceriesList(defaultGList.getGList_id());
+            ArrayList<GroceriesList> array_GroceriesList = dbHandler.getGroceriesListHandler().getGroceriesList(defaultGList.getGList_id());
             // 3. Create the ArrayAdapter (layout and content)
-            GroceriesAdapter groceriesAdapter = new GroceriesAdapter(main_activity, main_activity, array_GroceriesList, defaultGList.getGList_name(), dbPopulator);
+            GroceriesAdapter groceriesAdapter = new GroceriesAdapter(main_activity, main_activity, array_GroceriesList, defaultGList.getGList_name(), dbHandler);
             // 4. Update the list name and apply the ArrayAdapter to the ListView
             listNameView.setText(defaultGList.getGList_name());
             groceriesListView.setAdapter(groceriesAdapter);
@@ -95,7 +95,7 @@ public class MainActivityUI {
     // ======================== BACKUPPONE NAZIONALE ======================== //
     private void backupDB() {
         String backupFileName = "cosacompro.db"; // TODO: Crea un nome diverso per ogni backup (ad es.: "cosacompro_db_backup_20160320.db"
-        String dbPath = dbPopulator.getDBPath();
+        String dbPath = dbHandler.getDBPath();
         if (dbPath == null) {
             Toast.makeText(main_activity, "dbPath è null!", Toast.LENGTH_LONG).show();
             return;
@@ -144,8 +144,8 @@ public class MainActivityUI {
     public void generateAddProductToList() {
         if (addProductToListLayout.getVisibility() == View.INVISIBLE) {
             // Generate the Spinner with all the product names.
-            ArrayList<String> groceriesNameList = dbPopulator.getGroceriesListHandler().getGroceriesNameByListID(defaultGList.getGList_id());
-            ArrayList<String> arrayProducts = differenceList(dbPopulator.getProductHandler().getProductNames(), groceriesNameList);
+            ArrayList<String> groceriesNameList = dbHandler.getGroceriesListHandler().getGroceriesNameByListID(defaultGList.getGList_id());
+            ArrayList<String> arrayProducts = differenceList(dbHandler.getProductHandler().getProductNames(), groceriesNameList);
             ArrayAdapter<String> product_inputAdapter = new ArrayAdapter<String>(main_activity, android.R.layout.simple_spinner_item, arrayProducts);
             product_inputAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             product_input.setAdapter(product_inputAdapter);
@@ -154,7 +154,7 @@ public class MainActivityUI {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     ((TextView) parent.getChildAt(0)).setTextSize(14);
                     String productSelected = parent.getItemAtPosition(position).toString();
-                    productIdSelected = dbPopulator.getProductHandler().getProductID(productSelected);
+                    productIdSelected = dbHandler.getProductHandler().getProductID(productSelected);
                 }
 
                 @Override
@@ -167,7 +167,7 @@ public class MainActivityUI {
                 @Override
                 public void onClick(View view) {
                     String quantityText = quantity_input.getText().toString();
-                    dbPopulator.getGroceriesListHandler().addGroceriesList(new GroceriesList(defaultGList.getGList_id(), productIdSelected, Integer.parseInt(quantityText)));
+                    dbHandler.getGroceriesListHandler().addGroceriesList(new GroceriesList(defaultGList.getGList_id(), productIdSelected, Integer.parseInt(quantityText)));
 
                     clearAddProductToListFields();
                     inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);

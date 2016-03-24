@@ -5,13 +5,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
 import yithian.cosacompro.db.dbclasses.Product;
 
 public class RowUI {
     private View view;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private GroceriesList curGroceriesList;
 
     private View addProductToListLayout;
@@ -22,9 +22,9 @@ public class RowUI {
     private Button deleteButton;
     private GroceriesAdapter groceriesAdapter;
 
-    public RowUI(GroceriesAdapter groceriesAdapter, DBPopulator dbPopulator, Activity main_activity, View view, GroceriesList curGroceriesList) {
+    public RowUI(GroceriesAdapter groceriesAdapter, DBHandler dbHandler, Activity main_activity, View view, GroceriesList curGroceriesList) {
         this.groceriesAdapter = groceriesAdapter;
-        this.dbPopulator = dbPopulator;
+        this.dbHandler = dbHandler;
         this.view = view;
         this.curGroceriesList = curGroceriesList;
 
@@ -47,7 +47,7 @@ public class RowUI {
 
     private void generateProdNameTextView() {
         int product_id = curGroceriesList.getProduct_id();
-        Product product = dbPopulator.getProductHandler().getProductbyID(product_id);
+        Product product = dbHandler.getProductHandler().getProductbyID(product_id);
         prodNameTextView.setText(product.getProduct_name());
     }
 
@@ -65,7 +65,7 @@ public class RowUI {
                 quantityTextView.setText(String.valueOf(newQuantity));
                 // 2b. Update quantity in the database
                 curGroceriesList.setQuantity(newQuantity);
-                dbPopulator.getGroceriesListHandler().updateQuantity(curGroceriesList);
+                dbHandler.getGroceriesListHandler().updateQuantity(curGroceriesList);
             }
         });
     }
@@ -83,7 +83,7 @@ public class RowUI {
                     quantityTextView.setText(String.valueOf(newQuantity));
                     // 4b. Update quantity in the database
                     curGroceriesList.setQuantity(newQuantity);
-                    dbPopulator.getGroceriesListHandler().updateQuantity(curGroceriesList);
+                    dbHandler.getGroceriesListHandler().updateQuantity(curGroceriesList);
                 }
             }
         });
@@ -92,7 +92,7 @@ public class RowUI {
     private void generateDeleteButton() {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dbPopulator.getGroceriesListHandler().deleteGrocery(curGroceriesList);
+                dbHandler.getGroceriesListHandler().deleteGrocery(curGroceriesList);
                 groceriesAdapter.removeFromList(curGroceriesList);
                 groceriesAdapter.notifyDataSetChanged();
                 hideAddProductToListLayout();

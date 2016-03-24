@@ -5,24 +5,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import yithian.cosacompro.db.dbclasses.Category;
-import yithian.cosacompro.db.dbclasses.GList;
-import yithian.cosacompro.db.dbclasses.GroceriesList;
-import yithian.cosacompro.db.dbclasses.Product;
-import yithian.cosacompro.db.dbclasses.ProductPrice;
-import yithian.cosacompro.db.dbclasses.Seller;
-import yithian.cosacompro.db.dbhandlers.CategoryHandler;
-import yithian.cosacompro.db.dbhandlers.GListHandler;
-import yithian.cosacompro.db.dbhandlers.GroceriesListHandler;
-import yithian.cosacompro.db.dbhandlers.ProductHandler;
-import yithian.cosacompro.db.dbhandlers.ProductPriceHandler;
-import yithian.cosacompro.db.dbhandlers.SellerHandler;
+import yithian.cosacompro.db.dbclasses.*;
+import yithian.cosacompro.db.dbhandlers.*;
 
-public class DBPopulator extends SQLiteOpenHelper {
+public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "cosacompro.db";
+    private static DBHandler mInstance;
 
-    private Context context;
     private GListHandler glistHandler;
     private SellerHandler sellerHandler;
     private CategoryHandler categoryHandler;
@@ -30,15 +20,30 @@ public class DBPopulator extends SQLiteOpenHelper {
     private ProductPriceHandler productPriceHandler;
     private GroceriesListHandler groceriesListHandler;
 
-    public DBPopulator(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
-        this.context = context;
-        glistHandler = new GListHandler(context, null, null, 1);
-        sellerHandler = new SellerHandler(context, null, null, 1);
-        categoryHandler = new CategoryHandler(context, null, null, 1);
-        productHandler = new ProductHandler(context, null, null, 1);
-        groceriesListHandler = new GroceriesListHandler(context, null, null, 1);
-        productPriceHandler = new ProductPriceHandler(context, null, null, 1);
+    /**
+     * Use the application context, which will ensure that you
+     * don't accidentally leak an Activity's context.
+     * See this article for more information: http://bit.ly/6LRzfx
+     */
+    public static DBHandler getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DBHandler(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+    /**
+     * Constructor should be private to prevent direct instantiation.
+     * make call to static factory method "getInstance()" instead.
+     */
+    private DBHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        glistHandler = GListHandler.getInstance(context);
+        sellerHandler = SellerHandler.getInstance(context);
+        categoryHandler = CategoryHandler.getInstance(context);
+        productHandler = ProductHandler.getInstance(context);
+        groceriesListHandler = GroceriesListHandler.getInstance(context);
+        productPriceHandler = ProductPriceHandler.getInstance(context);
     }
 
 

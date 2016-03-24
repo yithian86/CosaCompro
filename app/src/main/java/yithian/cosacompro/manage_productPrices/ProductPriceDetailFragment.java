@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.Product;
 import yithian.cosacompro.db.dbclasses.ProductPrice;
 import yithian.cosacompro.db.dbclasses.Seller;
@@ -27,7 +27,7 @@ import yithian.cosacompro.db.dbclasses.Seller;
 public class ProductPriceDetailFragment extends Fragment {
     private ProductPrice current_productprice;
     private View rootView;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private ArrayList<Product> product_arrayList;
     private ArrayList<String> prodNames_arrayList;
     private ArrayList<Seller> seller_arrayList;
@@ -63,9 +63,9 @@ public class ProductPriceDetailFragment extends Fragment {
                 current_productprice = new ProductPrice(productprice_id, product_id, seller_id, normal_price, special_price, special_data);
             }
             // Spinner(s) stuff
-            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
-            product_arrayList = dbPopulator.getProductHandler().getProducts();
-            seller_arrayList = dbPopulator.getSellerHandler().getSellers();
+            dbHandler = DBHandler.getInstance(this.getContext());
+            product_arrayList = dbHandler.getProductHandler().getProducts();
+            seller_arrayList = dbHandler.getSellerHandler().getSellers();
         }
     }
 
@@ -179,8 +179,8 @@ public class ProductPriceDetailFragment extends Fragment {
     }
 
     private void loadProductPriceValues() {
-        String current_productName = dbPopulator.getProductHandler().getProductNameByID(current_productprice.getProduct_id());
-        String current_sellerName = dbPopulator.getSellerHandler().getSellerNameByID(current_productprice.getSeller_id());
+        String current_productName = dbHandler.getProductHandler().getProductNameByID(current_productprice.getProduct_id());
+        String current_sellerName = dbHandler.getSellerHandler().getSellerNameByID(current_productprice.getSeller_id());
         if ((current_productName != null) && (current_sellerName != null)) {
             prod_name_input.setSelection(prodNames_arrayList.indexOf(current_productName));
             seller_input.setSelection(selNames_arrayList.indexOf(current_sellerName));
@@ -256,7 +256,7 @@ public class ProductPriceDetailFragment extends Fragment {
                         current_productprice.setSpecial_date("");
                     }
                     // Update the DB
-                    boolean updateResult = dbPopulator.getProductPriceHandler().updateProductPrice(current_productprice);
+                    boolean updateResult = dbHandler.getProductPriceHandler().updateProductPrice(current_productprice);
                     if (!updateResult) {
                         Snackbar.make(getView(), R.string.productprice_duplicate_error, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -297,7 +297,7 @@ public class ProductPriceDetailFragment extends Fragment {
                 }
                 current_productprice = new ProductPrice(product_id, seller_id, norm_price, spec_price, spec_date);
                 // Update the DB
-                boolean addResult = dbPopulator.getProductPriceHandler().addProductPrice(current_productprice);
+                boolean addResult = dbHandler.getProductPriceHandler().addProductPrice(current_productprice);
                 if (!addResult) {
                     Snackbar.make(getView(), R.string.productprice_duplicate_error, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

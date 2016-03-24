@@ -14,14 +14,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.ProductPrice;
 import yithian.cosacompro.db.dbhandlers.ProductPriceHandler;
 
 public class ProductPriceViewAdapter extends RecyclerView.Adapter<ProductPriceViewAdapter.ViewHolder> {
     private ArrayList<ProductPrice> productPricesList;
     private Context context;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
 
     public ProductPriceViewAdapter(ArrayList<ProductPrice> productPricesList, Context context) {
         this.productPricesList = productPricesList;
@@ -37,10 +37,10 @@ public class ProductPriceViewAdapter extends RecyclerView.Adapter<ProductPriceVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        dbPopulator = new DBPopulator(context, null, null, 1);
+        dbHandler = DBHandler.getInstance(context);
         holder.productPrice = productPricesList.get(position);
-        String productName = dbPopulator.getProductHandler().getProductNameByID(holder.productPrice.getProduct_id());
-        String sellerName = dbPopulator.getSellerHandler().getSellerNameByID(holder.productPrice.getSeller_id());
+        String productName = dbHandler.getProductHandler().getProductNameByID(holder.productPrice.getProduct_id());
+        String sellerName = dbHandler.getSellerHandler().getSellerNameByID(holder.productPrice.getSeller_id());
         holder.mProductNameView.setText(productName);
         holder.mSellerView.setText(sellerName);
         holder.mNormalPriceView.setText(String.valueOf(holder.productPrice.getNormal_price()));
@@ -112,7 +112,7 @@ public class ProductPriceViewAdapter extends RecyclerView.Adapter<ProductPriceVi
     }
 
     public void deleteProductPrice(ViewHolder holder) {
-        ProductPriceHandler productHandler = new DBPopulator(context, null, null, 1).getProductPriceHandler();
+        ProductPriceHandler productHandler = DBHandler.getInstance(context).getProductPriceHandler();
         productHandler.deleteProductPrice(holder.productPrice);
         removeFromList(holder.productPrice);
         notifyDataSetChanged();

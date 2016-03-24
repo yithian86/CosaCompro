@@ -40,9 +40,26 @@ public class GroceriesListHandler extends SQLiteOpenHelper {
             TABLE_NAME + " (" + COLUMN_PRODUCT_ID_FK + " COLLATE NOCASE, " + COLUMN_LIST_ID_FK + " COLLATE NOCASE);";
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS '" + TABLE_NAME + "';";
     private static final String SQL_READ_TABLE = "SELECT * FROM '" + TABLE_NAME + "'";
+    private static GroceriesListHandler mInstance;
 
-    public GroceriesListHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    /**
+     * Use the application context, which will ensure that you
+     * don't accidentally leak an Activity's context.
+     * See this article for more information: http://bit.ly/6LRzfx
+     */
+    public static GroceriesListHandler getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new GroceriesListHandler(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+    /**
+     * Constructor should be private to prevent direct instantiation.
+     * make call to static factory method "getInstance()" instead.
+     */
+    private GroceriesListHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

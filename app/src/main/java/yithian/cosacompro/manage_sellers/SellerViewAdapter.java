@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.Seller;
 import yithian.cosacompro.db.dbhandlers.SellerHandler;
 
@@ -108,7 +108,7 @@ public class SellerViewAdapter extends RecyclerView.Adapter<SellerViewAdapter.Vi
     }
 
     public void deleteSeller(ViewHolder holder) {
-        SellerHandler sellerHandler = new DBPopulator(context, null, null, 1).getSellerHandler();
+        SellerHandler sellerHandler = DBHandler.getInstance(context).getSellerHandler();
         sellerHandler.deleteSeller(holder.seller);
         removeFromList(holder.seller);
         notifyDataSetChanged();

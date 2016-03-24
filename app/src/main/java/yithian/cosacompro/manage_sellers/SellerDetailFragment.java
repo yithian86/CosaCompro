@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.Seller;
 
 /**
@@ -24,7 +24,7 @@ import yithian.cosacompro.db.dbclasses.Seller;
 public class SellerDetailFragment extends Fragment {
     private Seller current_seller;
     private View rootView;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private int open_mode_flag;
     // UI stuff
     private TextView seller_name_input;
@@ -51,7 +51,7 @@ public class SellerDetailFragment extends Fragment {
                 String seller_city = getArguments().getString("current_seller_city");
                 current_seller = new Seller(seller_id, seller_name, seller_address, seller_city);
             }
-            dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
+            dbHandler = DBHandler.getInstance(this.getContext());
         }
     }
 
@@ -138,7 +138,7 @@ public class SellerDetailFragment extends Fragment {
                     current_seller.setAddress(seller_address_input.getText().toString());
                     current_seller.setCity(seller_city_input.getText().toString());
                     // Update the DB
-                    boolean updateResult = dbPopulator.getSellerHandler().updateSeller(current_seller);
+                    boolean updateResult = dbHandler.getSellerHandler().updateSeller(current_seller);
                     if (!updateResult) {
                         Snackbar.make(getView(), R.string.seller_duplicate_error, Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -166,7 +166,7 @@ public class SellerDetailFragment extends Fragment {
                 String seller_city = seller_city_input.getText().toString();
                 current_seller = new Seller(seller_name, seller_address, seller_city);
                 // Update the DB
-                boolean updateResult = dbPopulator.getSellerHandler().addSeller(current_seller);
+                boolean updateResult = dbHandler.getSellerHandler().addSeller(current_seller);
                 if (!updateResult) {
                     Snackbar.make(getView(), R.string.seller_duplicate_error, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();

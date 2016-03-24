@@ -14,7 +14,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.ProductPrice;
 
 public class ProductPriceListActivity extends AppCompatActivity {
@@ -59,8 +59,8 @@ public class ProductPriceListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        DBPopulator dbPopulator = new DBPopulator(this.getBaseContext(), null, null, 1);
-        ArrayList<ProductPrice> productPricesList = dbPopulator.getProductPriceHandler().getProductPrices();
+        DBHandler dbHandler = DBHandler.getInstance(this.getBaseContext());
+        ArrayList<ProductPrice> productPricesList = dbHandler.getProductPriceHandler().getProductPrices();
         productPriceViewAdapter = new ProductPriceViewAdapter(productPricesList, this);
         recyclerView.setAdapter(productPriceViewAdapter);
     }

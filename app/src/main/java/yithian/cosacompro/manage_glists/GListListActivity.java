@@ -14,7 +14,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GList;
 
 public class GListListActivity extends AppCompatActivity {
@@ -59,8 +59,8 @@ public class GListListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        DBPopulator dbPopulator = new DBPopulator(this.getBaseContext(), null, null, 1);
-        ArrayList<GList> gLists = dbPopulator.getGListHandler().getGLists();
+        DBHandler dbHandler = DBHandler.getInstance(this.getBaseContext());
+        ArrayList<GList> gLists = dbHandler.getGListHandler().getGLists();
         GListViewAdapter = new GListViewAdapter(gLists, this);
         recyclerView.setAdapter(GListViewAdapter);
     }

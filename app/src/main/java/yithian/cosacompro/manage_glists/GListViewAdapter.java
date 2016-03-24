@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import yithian.cosacompro.R;
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GList;
 import yithian.cosacompro.db.dbhandlers.GListHandler;
 
@@ -107,7 +107,7 @@ public class GListViewAdapter extends RecyclerView.Adapter<GListViewAdapter.View
     }
 
     public void openGListDetail(ViewHolder holder) {
-        GListHandler gListHandler = new DBPopulator(context, null, null, 1).getGListHandler();
+        GListHandler gListHandler = DBHandler.getInstance(context).getGListHandler();
         gListHandler.deleteGList(holder.gList);
         removeFromList(holder.gList);
         notifyDataSetChanged();

@@ -9,23 +9,23 @@ import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
-import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.db.DBHandler;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
 
 public class GroceriesAdapter extends BaseAdapter {
     private Context main_context;
     private Activity main_activity;
     private String defaultList;
-    private DBPopulator dbPopulator;
+    private DBHandler dbHandler;
     private RowUI rowUI;
     private ArrayList<GroceriesList> groceriesLists;
 
-    public GroceriesAdapter(Context main_context, Activity main_activity, ArrayList<GroceriesList> groceriesLists, String defaultList, DBPopulator dbPopulator) {
+    public GroceriesAdapter(Context main_context, Activity main_activity, ArrayList<GroceriesList> groceriesLists, String defaultList, DBHandler dbHandler) {
         this.main_context = main_context;
         this.main_activity = main_activity;
         this.defaultList = defaultList;
         this.groceriesLists = groceriesLists;
-        this.dbPopulator = dbPopulator;
+        this.dbHandler = dbHandler;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class GroceriesAdapter extends BaseAdapter {
         GroceriesList curGrocerie = (GroceriesList) getItem(position);
 
         // Generate the row UI
-        rowUI = new RowUI(this, dbPopulator, main_activity, view, curGrocerie);
+        rowUI = new RowUI(this, dbHandler, main_activity, view, curGrocerie);
         rowUI.generateRowUI();
         return view;
     }
@@ -68,8 +68,8 @@ public class GroceriesAdapter extends BaseAdapter {
     }
 
     // GETTERS
-    public DBPopulator getDbPopulator() {
-        return dbPopulator;
+    public DBHandler getDbHandler() {
+        return dbHandler;
     }
 
     public String getDefaultList() {
