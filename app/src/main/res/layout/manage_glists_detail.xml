@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:contextClickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/list_name_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_span="1"
+                android:text="Nome lista:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/glist_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="top|left"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:textSize="14sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/list_start_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_span="1"
+                android:text="Data inizio:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/glist_start_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="top|left"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:maxLength="50"
+                android:maxLines="3"
+                android:textSize="14sp"
+                android:text="(coming soon)" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/list_end_TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="4dp"
+                android:layout_span="1"
+                android:text="Data fine:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/glist_end_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_gravity="top|left"
+                android:layout_span="2"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:maxLength="25"
+                android:maxLines="2"
+                android:textSize="14sp"
+                android:text="(coming soon)" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/applyGListChanges_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:elegantTextHeight="false"
+        android:singleLine="true"
+        android:text="Applica Modifiche" />
+
+</LinearLayout>

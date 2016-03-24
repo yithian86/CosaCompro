@@ -32,7 +32,6 @@ public class CategoryHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
         db.execSQL(SQL_UNIQUE_CONSTRAINT);
-        db.close();
     }
 
     @Override
@@ -81,6 +80,7 @@ public class CategoryHandler extends SQLiteOpenHelper {
             resList.add(temp);
             c.moveToNext();
         }
+        c.close();
         db.close();
         return resList;
     }

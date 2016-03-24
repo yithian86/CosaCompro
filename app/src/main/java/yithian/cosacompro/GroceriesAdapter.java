@@ -57,7 +57,7 @@ public class GroceriesAdapter extends BaseAdapter {
         GroceriesList curGrocerie = (GroceriesList) getItem(position);
 
         // Generate the row UI
-        rowUI = new RowUI(this, main_activity, view, curGrocerie);
+        rowUI = new RowUI(this, dbPopulator, main_activity, view, curGrocerie);
         rowUI.generateRowUI();
         return view;
     }

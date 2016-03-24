@@ -29,4 +29,9 @@
     <string name="seller_field_address">Address</string>
     <string name="seller_field_city">City</string>
     <string name="seller_field_seller_name">Seller</string>
+    <string name="title_glist_add">Add List</string>
+    <string name="title_glist_edit">Edit List</string>
+    <string name="title_glist_info">List Info</string>
+    <string name="title_glist_list">Manage List</string>
+    <string name="action_manageGLists">Manage Lists</string>
 </resources>

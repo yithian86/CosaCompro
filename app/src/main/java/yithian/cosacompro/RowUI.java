@@ -5,14 +5,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import yithian.cosacompro.db.DBPopulator;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
-import yithian.cosacompro.db.dbhandlers.GroceriesListHandler;
+import yithian.cosacompro.db.dbclasses.Product;
 
 public class RowUI {
-    private GroceriesAdapter groceriesAdapter;
     private View view;
+    private DBPopulator dbPopulator;
     private GroceriesList curGroceriesList;
-    private GroceriesListHandler groceriesListHandler;
 
     private View addProductToListLayout;
     private TextView prodNameTextView;
@@ -20,15 +20,16 @@ public class RowUI {
     private Button incrQButton;
     private Button decrQButton;
     private Button deleteButton;
+    private GroceriesAdapter groceriesAdapter;
 
-    public RowUI(GroceriesAdapter groceriesAdapter, Activity main_activity, View view, GroceriesList curGroceriesList) {
+    public RowUI(GroceriesAdapter groceriesAdapter, DBPopulator dbPopulator, Activity main_activity, View view, GroceriesList curGroceriesList) {
         this.groceriesAdapter = groceriesAdapter;
+        this.dbPopulator = dbPopulator;
         this.view = view;
         this.curGroceriesList = curGroceriesList;
-        this.groceriesListHandler = groceriesAdapter.getDbPopulator().getGroceriesListHandler();
 
         // UI elements
-        this.addProductToListLayout = (View) main_activity.findViewById(R.id.addProductToListLayout);
+        this.addProductToListLayout = main_activity.findViewById(R.id.addProductToListLayout); // TODO: change 'main_activity' with 'view'
         this.deleteButton = (Button) view.findViewById(R.id.deleteButton);
         this.prodNameTextView = (TextView) view.findViewById(R.id.prodNameTextView);
         this.quantityTextView = (TextView) view.findViewById(R.id.quantityTextView);
@@ -45,7 +46,9 @@ public class RowUI {
     }
 
     private void generateProdNameTextView() {
-        prodNameTextView.setText(curGroceriesList.getProduct_name());
+        int product_id = curGroceriesList.getProduct_id();
+        Product product = dbPopulator.getProductHandler().getProductbyID(product_id);
+        prodNameTextView.setText(product.getProduct_name());
     }
 
     private void generateQuantityTextView() {
@@ -59,10 +62,10 @@ public class RowUI {
                 int newQuantity = Integer.parseInt(quantityTextView.getText().toString());
                 newQuantity++;
                 // 2a. Update quantity in TextView value
-                quantityTextView.setText(Integer.toString(newQuantity));
+                quantityTextView.setText(String.valueOf(newQuantity));
                 // 2b. Update quantity in the database
                 curGroceriesList.setQuantity(newQuantity);
-                groceriesListHandler.updateQuantity(curGroceriesList);
+                dbPopulator.getGroceriesListHandler().updateQuantity(curGroceriesList);
             }
         });
     }
@@ -77,10 +80,10 @@ public class RowUI {
                     // 3. Decrease it by 1
                     newQuantity--;
                     // 4a. Update quantity in TextView value
-                    quantityTextView.setText(Integer.toString(newQuantity));
+                    quantityTextView.setText(String.valueOf(newQuantity));
                     // 4b. Update quantity in the database
                     curGroceriesList.setQuantity(newQuantity);
-                    groceriesListHandler.updateQuantity(curGroceriesList);
+                    dbPopulator.getGroceriesListHandler().updateQuantity(curGroceriesList);
                 }
             }
         });
@@ -89,9 +92,7 @@ public class RowUI {
     private void generateDeleteButton() {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                System.out.println("Removing: " + curGroceriesList.getProduct_id() + ":" + curGroceriesList.getProduct_name() + " - " + curGroceriesList.getList_name() + "\n");
-
-                groceriesListHandler.deleteGrocery(curGroceriesList);
+                dbPopulator.getGroceriesListHandler().deleteGrocery(curGroceriesList);
                 groceriesAdapter.removeFromList(curGroceriesList);
                 groceriesAdapter.notifyDataSetChanged();
                 hideAddProductToListLayout();

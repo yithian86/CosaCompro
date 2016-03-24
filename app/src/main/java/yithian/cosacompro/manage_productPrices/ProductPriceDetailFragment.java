@@ -62,7 +62,6 @@ public class ProductPriceDetailFragment extends Fragment {
                 String special_data = getArguments().getString("cur_productprice_specdate");
                 current_productprice = new ProductPrice(productprice_id, product_id, seller_id, normal_price, special_price, special_data);
             }
-
             // Spinner(s) stuff
             dbPopulator = new DBPopulator(this.getContext(), null, null, 1);
             product_arrayList = dbPopulator.getProductHandler().getProducts();

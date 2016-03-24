@@ -33,6 +33,14 @@
     <string name="title_productprice_edit">Edit Product Price</string>
     <string name="productprice_duplicate_error">ooops! You tried to add a product price that already exists!</string>
 
+    <!-- ManageProductPrices -->
+    <string name="action_manageGLists">Manage Lists</string>
+    <string name="title_glist_list">Manage List</string>
+    <string name="title_glist_info">List Info</string>
+    <string name="title_glist_add">Add List</string>
+    <string name="title_glist_edit">Edit List</string>
+    <string name="glist_duplicate_error">ooops! You tried to add a list that already exists!</string>
+
     <!-- Seller fields-->
     <string name="seller_field_seller_name">Seller</string>
     <string name="seller_field_address">Address</string>
@@ -42,7 +50,7 @@
     <string name="product_field_product_name">Product</string>
     <string name="product_field_brand">Brand</string>
     <string name="product_field_category">Category</string>
-    <string name="product_field_barcode">Barcode:</string>
+    <string name="product_field_barcode">Barcode</string>
     <string name="product_field_description">Description</string>
 
     <!-- Nothing -->

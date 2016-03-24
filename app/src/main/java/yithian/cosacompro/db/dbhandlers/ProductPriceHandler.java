@@ -53,7 +53,6 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
         db.execSQL(SQL_UNIQUE_CONSTRAINT);
-        db.close();
     }
 
     @Override
@@ -79,9 +78,6 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -104,9 +100,6 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -151,6 +144,8 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             resProductList.add(tempProductPrice);
             c.moveToNext();
         }
+        c.close();
+        db.close();
         return resProductList;
     }
 }

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yithian.cosacompro.db.DBPopulator;
+import yithian.cosacompro.manage_glists.GListListActivity;
 import yithian.cosacompro.manage_productprices.ProductPriceListActivity;
 import yithian.cosacompro.manage_products.ProductListActivity;
 import yithian.cosacompro.manage_sellers.SellerListActivity;
@@ -17,8 +18,6 @@ import yithian.cosacompro.settings.SettingsActivity;
 import yithian.cosacompro.settings.SettingsManager;
 
 public class MainActivity extends AppCompatActivity {
-    private SettingsManager settingsManager;
-    private DBPopulator dbPopulator;
     private MainActivityUI mainActivityUI;
 
     @Override
@@ -31,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Settings and preferences
-        settingsManager = new SettingsManager(this);
+        SettingsManager settingsManager = new SettingsManager(this);
         // Initialize and populate Database
-        dbPopulator = new DBPopulator(this, null, null, 1);
+        DBPopulator dbPopulator = new DBPopulator(this, null, null, 1);
         dbPopulator.populateDB();
         // Generate UI
         mainActivityUI = new MainActivityUI(this, settingsManager, dbPopulator);
@@ -67,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            case R.id.action_manageLists:
+                startActivity(new Intent(MainActivity.this, GListListActivity.class));
                 break;
             case R.id.action_manageSellers:
                 startActivity(new Intent(MainActivity.this, SellerListActivity.class));

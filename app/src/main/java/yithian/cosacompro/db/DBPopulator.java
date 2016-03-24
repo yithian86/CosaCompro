@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import yithian.cosacompro.db.dbclasses.Category;
+import yithian.cosacompro.db.dbclasses.GList;
 import yithian.cosacompro.db.dbclasses.GroceriesList;
-import yithian.cosacompro.db.dbclasses.List;
 import yithian.cosacompro.db.dbclasses.Product;
 import yithian.cosacompro.db.dbclasses.ProductPrice;
 import yithian.cosacompro.db.dbclasses.Seller;
 import yithian.cosacompro.db.dbhandlers.CategoryHandler;
+import yithian.cosacompro.db.dbhandlers.GListHandler;
 import yithian.cosacompro.db.dbhandlers.GroceriesListHandler;
-import yithian.cosacompro.db.dbhandlers.ListHandler;
 import yithian.cosacompro.db.dbhandlers.ProductHandler;
 import yithian.cosacompro.db.dbhandlers.ProductPriceHandler;
 import yithian.cosacompro.db.dbhandlers.SellerHandler;
@@ -23,7 +23,7 @@ public class DBPopulator extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "cosacompro.db";
 
     private Context context;
-    private ListHandler listHandler;
+    private GListHandler glistHandler;
     private SellerHandler sellerHandler;
     private CategoryHandler categoryHandler;
     private ProductHandler productHandler;
@@ -33,7 +33,7 @@ public class DBPopulator extends SQLiteOpenHelper {
     public DBPopulator(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         this.context = context;
-        listHandler = new ListHandler(context, null, null, 1);
+        glistHandler = new GListHandler(context, null, null, 1);
         sellerHandler = new SellerHandler(context, null, null, 1);
         categoryHandler = new CategoryHandler(context, null, null, 1);
         productHandler = new ProductHandler(context, null, null, 1);
@@ -43,7 +43,7 @@ public class DBPopulator extends SQLiteOpenHelper {
 
 
     public void populateDB() {
-        populateList();
+        populateGList();
         populateSeller();
         populateCategory();
         populateProduct();
@@ -51,16 +51,20 @@ public class DBPopulator extends SQLiteOpenHelper {
         populateProductPrice();
     }
 
-    private void populateList() {
-        List list;
+    public String getDBPath() {
+        return this.getReadableDatabase().getPath();
+    }
+
+    private void populateGList() {
+        GList glist;
 
         // Wipe out table content
-        listHandler.deleteAllLists();
+        glistHandler.deleteAllGLists();
 
         String[] list_name = {"### sample list ###", "Spesa settimanale", "Spesa invernale", "Spesa estiva"};
         for (int i = 0; i < list_name.length; i++) {
-            list = new List(list_name[i], null, null);
-            listHandler.addList(list);
+            glist = new GList(list_name[i], null, null);
+            glistHandler.addGList(glist);
         }
     }
 
@@ -120,7 +124,7 @@ public class DBPopulator extends SQLiteOpenHelper {
 
         int[] quantity = {1, 2, 10};
         for (int i = 0; i < quantity.length; i++) {
-            groceriesList = new GroceriesList(quantity[i], "### sample list ###", i + 1);
+            groceriesList = new GroceriesList(1, i + 1, quantity[i]);
             groceriesListHandler.addGroceriesList(groceriesList);
         }
     }
@@ -160,8 +164,8 @@ public class DBPopulator extends SQLiteOpenHelper {
         return groceriesListHandler;
     }
 
-    public ListHandler getListHandler() {
-        return listHandler;
+    public GListHandler getGListHandler() {
+        return glistHandler;
     }
 
     public ProductHandler getProductHandler() {

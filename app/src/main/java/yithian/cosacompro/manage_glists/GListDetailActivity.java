@@ -1,4 +1,4 @@
-package yithian.cosacompro.manage_sellers;
+package yithian.cosacompro.manage_glists;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +17,14 @@ import yithian.cosacompro.R;
  * An activity representing a single Seller detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link SellerListActivity}.
+ * in a {@link GListListActivity}.
  */
-public class SellerDetailActivity extends AppCompatActivity {
+public class GListDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_sellers_activity_detail);
+        setContentView(R.layout.manage_glists_activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,14 +53,14 @@ public class SellerDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             if (getIntent().getIntExtra("open_mode_flag", 0) != 2) {
-                arguments.putInt("current_seller_id", getIntent().getIntExtra("current_seller_id", -1));
-                arguments.putString("current_seller_name", getIntent().getStringExtra("current_seller_name"));
-                arguments.putString("current_seller_address", getIntent().getStringExtra("current_seller_address"));
-                arguments.putString("current_seller_city", getIntent().getStringExtra("current_seller_city"));
+                arguments.putInt("current_glist_id", getIntent().getIntExtra("current_glist_id", -1));
+                arguments.putString("current_glist_name", getIntent().getStringExtra("current_glist_name"));
+                arguments.putString("current_glist_start", getIntent().getStringExtra("current_glist_start"));
+                arguments.putString("current_glist_end", getIntent().getStringExtra("current_glist_end"));
             }
             arguments.putInt("open_mode_flag", getIntent().getIntExtra("open_mode_flag", 0));
 
-            SellerDetailFragment fragment = new SellerDetailFragment();
+            GListDetailFragment fragment = new GListDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.glist_detail_container, fragment)
@@ -79,7 +79,7 @@ public class SellerDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, SellerListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, GListListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

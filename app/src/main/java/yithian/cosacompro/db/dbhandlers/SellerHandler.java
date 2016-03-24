@@ -40,7 +40,6 @@ public class SellerHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
         db.execSQL(SQL_UNIQUE_CONSTRAINT);
-        db.close();
     }
 
     @Override
@@ -65,9 +64,6 @@ public class SellerHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -89,9 +85,6 @@ public class SellerHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -133,6 +126,8 @@ public class SellerHandler extends SQLiteOpenHelper {
             resSellerList.add(tempSeller);
             c.moveToNext();
         }
+        c.close();
+        db.close();
         return resSellerList;
     }
 
@@ -150,6 +145,7 @@ public class SellerHandler extends SQLiteOpenHelper {
         if ((!c.isAfterLast() && (c.getCount() != 0))) {
             sellerName = c.getString(c.getColumnIndex(COLUMN_SELLER_NAME));
         }
+        c.close();
         db.close();
         return sellerName;
     }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="yithian.cosacompro">
 
+    <!-- For DB backup -->
+    <uses-permission android:name="android.permission.STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -92,6 +95,26 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="yithian.cosacompro.manage_productprices.ProductPriceListActivity" />
+        </activity>
+
+        <!-- MANGE GLISTS ACTIVITY-->
+        <activity
+            android:name=".manage_glists.GListListActivity"
+            android:label="@string/title_glist_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="yithian.cosacompro.MainActivity" />
+        </activity>
+        <activity
+            android:name=".manage_glists.GListDetailActivity"
+            android:label="@string/title_glist_list"
+            android:parentActivityName=".manage_glists.GListListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="yithian.cosacompro.manage_glists.GListListActivity" />
         </activity>
     </application>
 

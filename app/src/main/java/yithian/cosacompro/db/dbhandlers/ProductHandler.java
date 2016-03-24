@@ -50,7 +50,6 @@ public class ProductHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE);
         db.execSQL(SQL_UNIQUE_CONSTRAINT);
-        db.close();
     }
 
     @Override
@@ -77,9 +76,6 @@ public class ProductHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -104,9 +100,6 @@ public class ProductHandler extends SQLiteOpenHelper {
             } catch (SQLiteConstraintException sqlException) {
                 Log.d("sqlException", sqlException.getMessage());
                 res = false;
-            } finally {
-                db.close();
-                return res;
             }
         }
         return res;
@@ -150,6 +143,8 @@ public class ProductHandler extends SQLiteOpenHelper {
             resProductList.add(tempProduct);
             c.moveToNext();
         }
+        c.close();
+        db.close();
         return resProductList;
     }
 
@@ -175,6 +170,8 @@ public class ProductHandler extends SQLiteOpenHelper {
             resProduct = new Product(temp_product_id, temp_product_name, temp_brand, temp_category, temp_barcode, temp_description);
             c.moveToNext();
         }
+        c.close();
+        db.close();
         return resProduct;
     }
 
@@ -195,6 +192,7 @@ public class ProductHandler extends SQLiteOpenHelper {
             }
             c.moveToNext();
         }
+        c.close();
         db.close();
         return productID;
     }
@@ -213,6 +211,7 @@ public class ProductHandler extends SQLiteOpenHelper {
         if ((!c.isAfterLast() && (c.getCount() != 0))) {
             productName = c.getString(c.getColumnIndex(COLUMN_PRODUCT_NAME));
         }
+        c.close();
         db.close();
         return productName;
     }
@@ -233,6 +232,8 @@ public class ProductHandler extends SQLiteOpenHelper {
             }
             c.moveToNext();
         }
+        c.close();
+        db.close();
         return allProducts;
     }
 }
