@@ -163,16 +163,16 @@ public class ProductPriceDetailFragment extends Fragment {
 
         switch (open_mode_flag) {
             case 0:
-                openReadOnly();
+                readOnly();
                 break;
             case 1:
-                openEditMode();
+                editMode();
                 break;
             case 2:
-                openAddMode();
+                addMode();
                 break;
             default:
-                openReadOnly();
+                readOnly();
                 break;
         }
         return rootView;
@@ -209,7 +209,7 @@ public class ProductPriceDetailFragment extends Fragment {
         else applyProductPriceChanges_button.setVisibility(View.GONE);
     }
 
-    private void openReadOnly() {
+    private void readOnly() {
         if (current_productprice != null) {
             // Load values in UI
             loadProductPriceValues();
@@ -220,7 +220,7 @@ public class ProductPriceDetailFragment extends Fragment {
         }
     }
 
-    private void openEditMode() {
+    private void editMode() {
         if (current_productprice != null) {
             // Load values in UI
             loadProductPriceValues();
@@ -269,7 +269,7 @@ public class ProductPriceDetailFragment extends Fragment {
         }
     }
 
-    private void openAddMode() {
+    private void addMode() {
         // Set title on top
         this.getActivity().setTitle(R.string.title_productprice_add);
         // Enable UI

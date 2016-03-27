@@ -56,16 +56,22 @@ public class DBHandler extends SQLiteOpenHelper {
         populateProductPrice();
     }
 
+    public void wipeDB() {
+        // Wipe out DB content
+        glistHandler.deleteAllGLists();
+        sellerHandler.deleteAllSellers();
+        categoryHandler.deleteAllCategories();
+        productHandler.deleteAllProducts();
+        groceriesListHandler.deleteAllGroceries();
+        productPriceHandler.deleteAllProductPrices();
+    }
+
     public String getDBPath() {
         return this.getReadableDatabase().getPath();
     }
 
     private void populateGList() {
         GList glist;
-
-        // Wipe out table content
-        glistHandler.deleteAllGLists();
-
         String[] list_name = {"### sample list ###", "Spesa settimanale", "Spesa invernale", "Spesa estiva"};
         for (int i = 0; i < list_name.length; i++) {
             glist = new GList(list_name[i], null, null);
@@ -75,10 +81,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private void populateSeller() {
         Seller seller;
-
-        // Wipe out table content
-        sellerHandler.deleteAllSellers();
-
         String[] seller_name = {"COOP", "Carrefour"};
         String[] address = {"Via Paolo Borsellino, 32", "Via Glasgow"};
         String[] city = {"Cerveteri", "Ladispoli"};
@@ -90,10 +92,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private void populateCategory() {
         Category category;
-
-        // Wipe out table content
-        categoryHandler.deleteAllCategories();
-
         String cat_name[] = {"Acqua", "Bevande", "Caffè e The", "Carne", "Cereali", "Dolci",
                 "Frutta", "Funghi", "Latte e derivati", "Legumi", "Molluschi",
                 "Ortaggi", "Pane", "Pasta", "Pesce", "Salse e Sughi", "Uova", "Zucchero", "Altro"};
@@ -105,10 +103,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private void populateProduct() {
         Product product;
-
-        // Wipe out table content
-        productHandler.deleteAllProducts();
-
         String[] product_name = {"Certosa", "Latte parzialmente scremato", "Passata di pomodoro", "Mozzarella Santa Lucia"};
         String[] brand = {"Galbani", "Parmalat", "Cirio", "Galbani"};
         String[] category = {"Latte e derivati", "Latte e derivati", "Salse e Sughi", "Latte e derivati"};
@@ -123,10 +117,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private void populateGroceriesList() {
         GroceriesList groceriesList;
-
-        // Wipe out table content
-        groceriesListHandler.deleteAllGroceries();
-
         int[] quantity = {1, 2, 10};
         for (int i = 0; i < quantity.length; i++) {
             groceriesList = new GroceriesList(1, i + 1, quantity[i]);
@@ -136,10 +126,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private void populateProductPrice() {
         ProductPrice productPrice;
-
-        // Wipe out table content
-        productPriceHandler.deleteAllProductPrices();
-
         int[] product_id = {1, 2, 3, 5};
         int[] seller_id = {1, 1, 1, 1};
         double[] normal_price = {1.29, 0.72, 9.99, 1.81};

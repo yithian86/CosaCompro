@@ -14,6 +14,7 @@ import yithian.cosacompro.manage_glists.GListListActivity;
 import yithian.cosacompro.manage_productprices.ProductPriceListActivity;
 import yithian.cosacompro.manage_products.ProductListActivity;
 import yithian.cosacompro.manage_sellers.SellerListActivity;
+import yithian.cosacompro.scan_product.ScanProductActivity;
 import yithian.cosacompro.settings.SettingsActivity;
 import yithian.cosacompro.settings.SettingsManager;
 
@@ -31,9 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Settings and preferences
         SettingsManager settingsManager = new SettingsManager(this);
+
         // Initialize and populate Database
         DBHandler dbHandler = DBHandler.getInstance(this);
-        dbHandler.populateDB();
+//        dbHandler.wipeDB();
+//        dbHandler.populateDB();
+
         // Generate UI
         mainActivityUI = new MainActivityUI(this, settingsManager, dbHandler);
         mainActivityUI.generateDefaultList();
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+            case R.id.action_scanProduct:
+                startActivity(new Intent(MainActivity.this, ScanProductActivity.class));
                 break;
             case R.id.action_manageLists:
                 startActivity(new Intent(MainActivity.this, GListListActivity.class));

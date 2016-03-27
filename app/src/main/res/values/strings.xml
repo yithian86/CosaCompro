@@ -6,6 +6,15 @@
     <string name="default_list_title">Default list</string>
     <string name="default_list_summary">Select the list that will be loaded on startup.</string>
 
+    <!-- ScanProduct -->
+    <string name="action_scanProduct">Scan Product</string>
+    <string name="ScanProduct_optionTitleMessage">No Product found with that barcode. Whatcha gonna do, brother?</string>
+    <string name="ScanProduct_optionAddProduct">Add Product</string>
+    <string name="ScanProduct_optionGoBackHome">Go back Home</string>
+    <string name="ScanProduct_scanButtonText">SCAN FOR YOUR LIFE!</string>
+    <string name="ScanProduct_barcodeTextviewText">Barcode:</string>
+    <string name="ScanProduct_formatTextviewText">Format:</string>
+
     <!-- ManageList -->
     <string name="manageList_title">Manage List</string>
 

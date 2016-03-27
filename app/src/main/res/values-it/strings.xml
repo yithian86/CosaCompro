@@ -34,4 +34,15 @@
     <string name="title_glist_info">Info Lista</string>
     <string name="title_glist_list">Gestione Liste</string>
     <string name="action_manageGLists">Gestione Liste</string>
+    <string name="action_scanProduct">Scan Prodotto</string>
+    <string name="glist_duplicate_error">ooops! Hai provato ad inserire una lista già esistente!</string>
+    <string name="product_duplicate_error">ooops! Hai provato ad inserire un prodotto già esistente!</string>
+    <string name="productprice_duplicate_error">ooops! Hai provato ad inserire una prezzatura già esistente!</string>
+    <string name="seller_duplicate_error">ooops! Hai provato ad inserire un venditore già esistente!</string>
+    <string name="ScanProduct_scanButtonText">SCAN FOR YOUR LIFE!</string>
+    <string name="ScanProduct_barcodeTextviewText">Codice a barre:</string>
+    <string name="ScanProduct_formatTextviewText">Formato codice:</string>
+    <string name="ScanProduct_optionAddProduct">Aggiungi Prodotto</string>
+    <string name="ScanProduct_optionGoBackHome">Torna alla Home</string>
+    <string name="ScanProduct_optionTitleMessage">Nessun prodotto trovato! Che vogliamo fa\'?</string>
 </resources>

@@ -53,6 +53,10 @@ public class ProductDetailFragment extends Fragment {
                 String product_description = getArguments().getString("current_product_description");
                 current_product = new Product(product_id, product_name, product_brand, product_category, product_barcode, product_description);
             }
+            if (open_mode_flag == 3) {
+                String product_barcode = getArguments().getString("current_product_barcode");
+                current_product = new Product("", "", "", product_barcode, "");
+            }
 
             // prod_cat_input Spinner stuff
             dbHandler = DBHandler.getInstance(this.getContext());
@@ -78,7 +82,7 @@ public class ProductDetailFragment extends Fragment {
         prod_cat_input.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) parent.getChildAt(0)).setTextSize(14);
+//                ((TextView) parent.getChildAt(0)).setTextSize(14);
             }
 
             @Override
@@ -95,6 +99,10 @@ public class ProductDetailFragment extends Fragment {
                 openEditMode();
                 break;
             case 2:
+                openAddMode();
+                break;
+            case 3:
+                prod_barcode_input.setText(current_product.getBarcode());
                 openAddMode();
                 break;
             default:

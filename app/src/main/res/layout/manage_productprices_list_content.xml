@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="2"
-            android:text="product_name"
+            android:text="seller_name"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="16dp"
             android:layout_column="1" />

@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="yithian.cosacompro.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_manageLists"
         android:orderInCategory="101"
         android:title="@string/action_manageGLists"
@@ -26,5 +21,16 @@
         android:id="@+id/action_manageProductPrices"
         android:orderInCategory="104"
         android:title="@string/action_manageProductPrices"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_scanProduct"
+        android:orderInCategory="105"
+        android:title="@string/action_scanProduct"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="106"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>

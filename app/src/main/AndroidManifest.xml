@@ -36,7 +36,19 @@
                 android:value=".settings.SettingsActivity" />
         </activity>
 
-        <!-- MANGE SELLERS ACTIVITY-->
+        <!-- SCANNER ACTIVITY -->
+        <activity
+            android:name=".scan_product.ScanProductActivity"
+            android:label="@string/action_scanProduct"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".scan_product.ScanProductActivity" />
+        </activity>
+
+        <!-- MANGE SELLERS ACTIVITY -->
         <activity
             android:name=".manage_sellers.SellerListActivity"
             android:label="@string/title_seller_list"
@@ -65,7 +77,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="yithian.cosacompro.MainActivity" />
-
         </activity>
         <activity
             android:name=".manage_products.ProductDetailActivity"
@@ -97,7 +108,7 @@
                 android:value="yithian.cosacompro.manage_productprices.ProductPriceListActivity" />
         </activity>
 
-        <!-- MANGE GLISTS ACTIVITY-->
+        <!-- MANGE GLISTS ACTIVITY -->
         <activity
             android:name=".manage_glists.GListListActivity"
             android:label="@string/title_glist_list"
