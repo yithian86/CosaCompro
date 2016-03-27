@@ -38,7 +38,7 @@ public class SettingsFragment extends PreferenceFragment {
     public void generateDefaultListField() {
         listPreference = (ListPreference) findPreference("default_list");
         if (listPreference != null) {
-            GListHandler gListHandler = GListHandler.getInstance(this.getContext());
+            GListHandler gListHandler = GListHandler.getInstance(getActivity().getApplicationContext());
             array_GLists = gListHandler.getGLists();
             array_GListNames = new ArrayList<>();
             for(GList index_GList: array_GLists) {
