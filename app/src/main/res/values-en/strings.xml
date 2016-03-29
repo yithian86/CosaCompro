@@ -45,4 +45,8 @@
     <string name="ScanProduct_optionGoBackHome">Go back Home</string>
     <string name="ScanProduct_optionTitleMessage">No Product found with that barcode. Whatcha gonna do, brother?</string>
     <string name="ScanProduct_scanButtonText">SCAN FOR YOUR LIFE!</string>
+    <string name="dbbackup_export_ok">Holy cow if I exported it!</string>
+    <string name="dbbackup_export_title">Export DB!</string>
+    <string name="dbbackup_import_title">Import DB!</string>
+    <string name="dbbackup_import_ok">Holy cow if I imported it!</string>
 </resources>

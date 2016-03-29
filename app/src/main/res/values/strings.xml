@@ -6,6 +6,12 @@
     <string name="default_list_title">Default list</string>
     <string name="default_list_summary">Select the list that will be loaded on startup.</string>
 
+    <!-- DBBackup-->
+    <string name="dbbackup_import_title">Import DB!</string>
+    <string name="dbbackup_import_ok">Holy cow if I imported it!</string>
+    <string name="dbbackup_export_title">Export DB!</string>
+    <string name="dbbackup_export_ok">Holy cow if I exported it!</string>
+
     <!-- ScanProduct -->
     <string name="action_scanProduct">Scan Product</string>
     <string name="ScanProduct_optionTitleMessage">No Product found with that barcode. Whatcha gonna do, brother?</string>

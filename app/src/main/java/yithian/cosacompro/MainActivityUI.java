@@ -3,7 +3,6 @@ package yithian.cosacompro;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,12 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import yithian.cosacompro.db.DBHandler;
@@ -64,15 +58,7 @@ public class MainActivityUI {
         product_input = (Spinner) main_activity.findViewById(R.id.product_input);
         quantity_input = (EditText) main_activity.findViewById(R.id.quantity_input);
         ok_button = (Button) main_activity.findViewById(R.id.ok_button);
-
-        // BACKUP stuff
-        Button DB_Backup_button = (Button) main_activity.findViewById(R.id.DB_Backup_Button);
-        DB_Backup_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backupDB();
-            }
-        });
+        close_AddProductToListLayout();
     }
 
     // Generates the default list view
@@ -92,57 +78,10 @@ public class MainActivityUI {
         }
     }
 
-    // ======================== BACKUPPONE NAZIONALE ======================== //
-    private void backupDB() {
-        String backupFileName = "cosacompro.db"; // TODO: Crea un nome diverso per ogni backup (ad es.: "cosacompro_db_backup_20160320.db"
-        String dbPath = dbHandler.getDBPath();
-        if (dbPath == null) {
-            Toast.makeText(main_activity, "dbPath è null!", Toast.LENGTH_LONG).show();
-            return;
-        }
-        try {
-            // Destination directory
-            File backupDirectory = Environment.getExternalStoragePublicDirectory("CosaCompro");
-//            String path = System.getenv("SECONDARY_STORAGE"); // + "/CosaCompro";
-//            File backupDirectory = new File(path);
-            backupDirectory.mkdirs();
-
-            if (isExternalStorageAvailable()) {
-                // Source DB file path
-                File currentDB = new File(dbPath);
-                // Destination DB file path
-                File backupDB = new File(backupDirectory, backupFileName);
-                Log.i("backup dest", backupDirectory.getAbsolutePath());
-                // Create Source and Destination channels for transfer
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                // 'DestFileSize' is the number of bytes that are transferred
-                long fileSize = dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                Log.i("Fatto", "Porca miseria se l'ho fatto: " + String.valueOf(fileSize) + " Bytes!");
-                Toast.makeText(main_activity, "Porca miseria se l'ho fatto!", Toast.LENGTH_LONG).show();
-            } else {
-                Log.e("Permission denied", "Can't write to SD card, add permission");
-                Toast.makeText(main_activity, "Can't write to SD card, add permission", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(main_activity, e.toString(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public boolean isExternalStorageAvailable() {
-        // Retrieving the external storage state
-        String state = Environment.getExternalStorageState();
-//        Log.i("state", state);
-        // Check if available
-        return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
-
     // ======================== addProductToList ======================== //
     // Generates the layout 'addProductToList', which allows the user to add groceries to the current default list.
     public void generateAddProductToList() {
-        if (addProductToListLayout.getVisibility() == View.INVISIBLE) {
+        if (addProductToListLayout.getVisibility() != View.VISIBLE) {
             // Generate the Spinner with all the product names.
             ArrayList<String> groceriesNameList = dbHandler.getGroceriesListHandler().getGroceriesNameByListID(defaultGList.getGList_id());
             ArrayList<String> arrayProducts = differenceList(dbHandler.getProductHandler().getProductNames(), groceriesNameList);
@@ -168,25 +107,26 @@ public class MainActivityUI {
                 public void onClick(View view) {
                     String quantityText = quantity_input.getText().toString();
                     dbHandler.getGroceriesListHandler().addGroceriesList(new GroceriesList(defaultGList.getGList_id(), productIdSelected, Integer.parseInt(quantityText)));
-
-                    clearAddProductToListFields();
-                    inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
-                    addProductToListLayout.setVisibility(View.INVISIBLE);
+                    close_AddProductToListLayout();
                     generateDefaultList();
                 }
             });
             // Make the layout visibile
             addProductToListLayout.setVisibility(View.VISIBLE);
         } else {
-            clearAddProductToListFields();
-            inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
-            addProductToListLayout.setVisibility(View.INVISIBLE);
+            close_AddProductToListLayout();
         }
     }
 
-    private void clearAddProductToListFields() {
+    private void close_AddProductToListLayout() {
         product_input.setSelection(-1);
         quantity_input.setText("0");
+        addProductToListLayout.setVisibility(View.GONE);
+        try {
+            inputMethodManager.hideSoftInputFromWindow(main_activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (java.lang.NullPointerException e) {
+            Log.e(e.getMessage(), e.toString());
+        }
     }
 
     // minuend - subtraend = difference

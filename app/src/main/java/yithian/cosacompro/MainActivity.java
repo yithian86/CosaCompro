@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import yithian.cosacompro.db.DBHandler;
+import yithian.cosacompro.dbbackup.DBBackup;
 import yithian.cosacompro.manage_glists.GListListActivity;
 import yithian.cosacompro.manage_productprices.ProductPriceListActivity;
 import yithian.cosacompro.manage_products.ProductListActivity;
@@ -20,6 +21,7 @@ import yithian.cosacompro.settings.SettingsManager;
 
 public class MainActivity extends AppCompatActivity {
     private MainActivityUI mainActivityUI;
+    private DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         SettingsManager settingsManager = new SettingsManager(this);
 
         // Initialize and populate Database
-        DBHandler dbHandler = DBHandler.getInstance(this);
+        dbHandler = DBHandler.getInstance(this);
 //        dbHandler.wipeDB();
 //        dbHandler.populateDB();
 
@@ -93,6 +95,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        mainActivityUI.generateDefaultList();
+    }
+
+    public void exportDB(View view) {
+        new DBBackup(this).exportDB();
+    }
+
+    public void importDB(View view) {
+        new DBBackup(this).importDB();
         mainActivityUI.generateDefaultList();
     }
 }

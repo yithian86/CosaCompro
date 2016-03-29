@@ -45,4 +45,8 @@
     <string name="ScanProduct_optionAddProduct">Aggiungi Prodotto</string>
     <string name="ScanProduct_optionGoBackHome">Torna alla Home</string>
     <string name="ScanProduct_optionTitleMessage">Nessun prodotto trovato! Che vogliamo fa\'?</string>
+    <string name="dbbackup_export_ok">Porca miseria se l\'ho esportato \'sto DB!</string>
+    <string name="dbbackup_export_title">Esportalo!</string>
+    <string name="dbbackup_import_title">Importalo!</string>
+    <string name="dbbackup_import_ok">Porca miseria se l\'ho importato \'sto DB!</string>
 </resources>

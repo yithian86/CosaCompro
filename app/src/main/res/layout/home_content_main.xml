@@ -20,10 +20,20 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/DB_Backup_Button"
+            android:id="@+id/DB_Backup_Export_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BACKUPPONE NAZIONALE" />
+            android:layout_weight=".5"
+            android:onClick="exportDB"
+            android:text="@string/dbbackup_export_title" />
+
+        <Button
+            android:id="@+id/DB_Backup_Import_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:onClick="importDB"
+            android:text="@string/dbbackup_import_title" />
     </TableRow>
 
     <TableRow
@@ -37,7 +47,7 @@
             android:elegantTextHeight="false"
             android:gravity="fill_horizontal|center_vertical"
             android:singleLine="true"
-            android:text="list_name"
+            android:text="-"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold|italic" />
@@ -50,7 +60,7 @@
         <ListView
             android:id="@+id/gListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
             android:clickable="false"
             android:contextClickable="true"
@@ -62,9 +72,9 @@
         android:id="@+id/addProductToListLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:visibility="invisible">
+        android:layout_gravity="left|bottom"
+        android:gravity="left|bottom"
+        android:orientation="horizontal">
 
         <Spinner
             android:id="@+id/product_input"
