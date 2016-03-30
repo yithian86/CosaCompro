@@ -93,6 +93,7 @@ public class SellerHandler extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             try {
                 ContentValues values = new ContentValues();
+                values.put(COLUMN_SELLER_ID, updated_seller.getSeller_id());
                 values.put(COLUMN_SELLER_NAME, updated_seller.getSeller_name());
                 values.put(COLUMN_ADDRESS, updated_seller.getAddress());
                 values.put(COLUMN_CITY, updated_seller.getCity());

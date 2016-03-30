@@ -107,6 +107,7 @@ public class ProductPriceHandler extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             try {
                 ContentValues values = new ContentValues();
+                values.put(COLUMN_PRICELIST_ID, updated_productprice.getPriceList_id());
                 values.put(COLUMN_PRODUCT_ID_FK, updated_productprice.getProduct_id());
                 values.put(COLUMN_SELLER_ID_FK, updated_productprice.getSeller_id());
                 values.put(COLUMN_NORMAL_PRICE, updated_productprice.getNormal_price());

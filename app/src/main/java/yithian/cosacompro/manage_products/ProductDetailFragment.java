@@ -158,8 +158,6 @@ public class ProductDetailFragment extends Fragment {
             this.getActivity().setTitle(R.string.title_product_edit);
             // Enable UI
             triggerUI(true);
-            prod_name_input.setEnabled(false);
-            prod_name_input.setFocusable(false);
 
             applyProductChanges_button.setOnClickListener(new View.OnClickListener() {
                 @Override

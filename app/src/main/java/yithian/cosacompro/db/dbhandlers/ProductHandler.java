@@ -105,8 +105,9 @@ public class ProductHandler extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
             try {
                 ContentValues values = new ContentValues();
-                values.put(COLUMN_BARCODE, updated_product.getBarcode());
+                values.put(COLUMN_PRODUCT_ID, updated_product.getProduct_id());
                 values.put(COLUMN_PRODUCT_NAME, updated_product.getProduct_name());
+                values.put(COLUMN_BARCODE, updated_product.getBarcode());
                 values.put(COLUMN_BRAND, updated_product.getBrand());
                 values.put(COLUMN_DESCRIPTION, updated_product.getDescription());
                 values.put(COLUMN_CATEGORY, updated_product.getCategory());

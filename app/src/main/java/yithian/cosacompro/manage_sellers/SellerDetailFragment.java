@@ -127,8 +127,6 @@ public class SellerDetailFragment extends Fragment {
             this.getActivity().setTitle(R.string.title_seller_edit);
             // Enable UI
             triggerUI(true);
-            seller_name_input.setEnabled(false);
-            seller_name_input.setFocusable(false);
 
             applySellerChanges_button.setOnClickListener(new View.OnClickListener() {
                 @Override
